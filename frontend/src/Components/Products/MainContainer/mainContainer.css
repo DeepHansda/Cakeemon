@@ -1,0 +1,76 @@
+
+.MuiDrawer-paper{
+    /* position:fixed; */
+    /* top:0; */
+    box-sizing: border-box;
+    /* height: 100%; */
+    margin:0;
+    padding:0 20px
+}
+.products-mainContainer{
+    display: flex;
+}
+
+.products-container-pagination .pagination *{
+    /* width:100%; */
+    color: rgb(80,80,80);
+    text-decoration: none;
+    transition: all 0.3s;
+    font:0.9em 'Poppins',sans-serif;
+}
+.products-container-pagination .pagination{
+    display: flex;
+    align-items: center;
+    padding: 0;
+   margin:10px;
+
+
+}
+.products-container-pagination .pagination .page-item{
+    background-color: #fff;
+    list-style: none;
+    border: 1px solid rgba(0,0,0,0.178);
+    padding: 1vmax 1.5vmax;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.products-container-pagination .pagination .page-item:first-child{
+    border-radius: 5px 0 0 5px;
+} 
+.products-container-pagination .pagination .page-item:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+} 
+
+.products-container-pagination .pagination .page-item:hover{
+    background-color: rgb(230,230,230);
+}
+.products-container-pagination .pagination .page-item:hover .page-link{
+    color: rgb(37, 37, 37);
+}
+.products-container-pagination .pagination .pageItemActive{
+    background-color:#55a630
+}
+.products-container-pagination .pagination .pageLinkActive{
+    color: white;
+}
+.mainContainer-product-container .chip-container{
+    margin:10px
+}
+
+@media screen and (min-width:600px){
+.MuiDrawer-paper{
+    box-sizing: border-box;
+   /* position: relative; */
+   margin-top:20px
+}
+    
+   
+}
+
+@media only screen and (min-width:1280px){
+    .mainContainer-product-container{
+        width: 1200px;
+    }
+}

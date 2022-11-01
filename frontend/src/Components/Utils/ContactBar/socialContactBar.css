@@ -1,0 +1,22 @@
+.social-contact-container {
+    width: 100%;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+    padding-top: 15px;
+  
+  }
+  
+.social-contact-container li a p {
+    color: var(--secondary-color)
+
+}
+@media screen and (min-width: 600px) {
+    .social-contact-container {
+        margin: 0px auto;
+        /* margin-top: 40px; */
+    }
+}
+
+

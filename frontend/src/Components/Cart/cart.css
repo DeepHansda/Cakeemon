@@ -1,0 +1,85 @@
+.cart {
+  max-width: 1400px;
+  margin-top: 20px;
+  outline: none;
+  border: none;
+  margin: 20px auto;
+  height: 100vh;
+}
+
+.cart-paper-container .cart-paper-desc,
+.cart-paper-numbers,.cart-sub-total .sub-total
+ {
+  display: flex;
+}
+.cart-paper-container .cart-paper-title {
+  flex: 60%;
+  padding: 0 10px;
+}
+.cart-paper-container .cart-paper-numbers {
+  margin: 10px 0;
+  padding: 0 40px;
+  justify-content: space-between;
+}
+.cart-paper-container
+  .cart-paper-numbers
+  .cart-paper-quantity
+  .cartInput
+  input {
+  margin: 0 15px;
+  width: 50px;
+}
+.cart-paper-container .cart-paper-title .MuiTypography-h4 {
+  font-family: "Poppins", sans-serif;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+.cart-paper-container .cart-paper-img {
+  flex: 40%;
+}
+.cart-paper-container .cart-paper-img img {
+  max-width: 100%;
+}
+.cart-sub-total .sub-total {
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+  padding: 20px;
+  margin-top: 10px;
+}
+.cart-sub-total .cart-sub-total-title {
+  margin: 0 30px;
+}
+.cart-paper-price .MuiTypography-body1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.4rem;
+  font-weight: normal;
+  color:var(--background-one);
+  font-weight: 500;
+
+}
+
+.cart .cart-checkout {
+  width: 100%;
+  text-align: right;
+  padding: 10px;
+}
+@media only screen and (min-width: 600px){
+.cart-paper-container .cart-paper-img {
+  flex:10%
+}
+}
+@media only screen and (min-width: 1280px){
+  .cart-sub-total{
+    border: 1px solid var(--public-color);
+height: fit-content;
+border-radius:5px;
+  }
+.cart-sub-total .sub-total {
+  flex-direction: column;
+  text-align:left;
+}
+.cart-sub-total .cart-sub-total-title {
+  margin: 0 
+}
+}
