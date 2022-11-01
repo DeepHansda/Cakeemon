@@ -7,7 +7,7 @@ const { cloudUpload, cloudDelete } = require("../services/imageUpload");
 module.exports = {
   addBanners: catchAsyncErrors(async (req, res, next) => {
     const images = req.files;
-    const folder = "tapajyoti/banners";
+    const folder = "cakeemon/banners";
     let bannerImages = [];
     let imgLinks = [];
 

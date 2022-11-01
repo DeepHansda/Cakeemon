@@ -9,19 +9,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, 'please enter the product description']
     },
-    features: {
-        type: String,
-        required: [true, 'please enter the product features']
-    },
     price: {
         type: Number,
         required: [true, 'please enter the price'],
         maxlength: [8, "Price cannot exceed 8 characters"]
-    },
-    brand:{
-        type: String,
-        // required: [true, 'please enter the brand'],
-        trim: true
     },
     ratings: {
         type: Number,
@@ -40,6 +31,13 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, "Please Enter Product Category"],
+    },
+    types:{
+        type: String,
+        required: [true, "Please Enter Product Type"]
+    },
+    occasion:{
+        type: String,
     },
     stock: {
         type: Number,
@@ -72,10 +70,12 @@ const productSchema = new mongoose.Schema({
         }
     }
     ],
-    best:{
+    top:{
         type:Boolean,
         default:false,
     },
+
+
     // createdBy:{
     //     type:mongoose.Schema.ObjectId,
     //     ref:'User',

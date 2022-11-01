@@ -6,7 +6,7 @@ const { cloudUpload, cloudDelete } = require("../services/imageUpload");
 module.exports = {
   addCategory: catchAsyncErrors(async (req, res, next) => {
     const image = req.file;
-    const folder = "tapajyoti/categories";
+    const folder = "cakeemon/categories";
    
 
   

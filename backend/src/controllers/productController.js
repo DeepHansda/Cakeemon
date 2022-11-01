@@ -15,7 +15,7 @@ module.exports = {
       productImages.push(image.path);
     });
 
-    const folder = "tapajyoti/products";
+    const folder = "cakeemon/products";
     const imgLinks = [];
     for (x in productImages) {
       const result = await cloudUpload(productImages[x], folder);
@@ -122,7 +122,7 @@ module.exports = {
         return file.path;
       });
     }
-    const folder = "tapajyoti/products";
+    const folder = "cakeemon/products";
     const imgLinks = [];
 
     const products = await ProductModel.findOne({ _id: req.params.id }).exec(

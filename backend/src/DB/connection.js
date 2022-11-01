@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connectDatabase = () =>{
-const mongoURI = process.env.MONGOUR || 'mongodb://localhost:27017/tapajyoti_db'
+const mongoURI = process.env.MONGOURI || 'mongodb://localhost:27017/tapajyoti_db'
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
