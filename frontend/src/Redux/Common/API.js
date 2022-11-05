@@ -7,7 +7,7 @@ export const API = axios.create({
   baseURL: "https://cakeemon-backend.vercel.app/api",
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://cakeemon.vercel.app/",
     'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept Accept-Encoding',
     },
 });
