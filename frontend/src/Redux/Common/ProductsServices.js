@@ -1,7 +1,7 @@
 import {API} from './API'
 export const ProductsServices ={
-    getProductsClient:(keyword , currentPage, category ,ratings ,brand)=>{
-        return API.get(`/getProducts/?keyword=${keyword}&category=${category}&page=${currentPage}&ratings=${ratings}&brand=${brand}`)
+    getProductsClient:(keyword , currentPage, category ,ratings )=>{
+        return API.get(`/getProducts/?keyword=${keyword}&category=${category}&page=${currentPage}&ratings=${ratings}`)
     },
 
     createProduct:(data)=>{

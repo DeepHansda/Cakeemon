@@ -17,7 +17,6 @@ import { newProduct } from "../../../Redux/Actions/ProductsActions";
 import { useSelector } from "react-redux";
 import Loading from "../../../Components/Utils/Loading";
 import { getCategories } from "../../../Redux/Actions/CategoriesAction";
-import { getBrands } from "../../../Redux/Actions/BrandActions";
 
 function ProductsForm() {
   const { dispatch, setOpenAlert } = useContext(ProjectContext);
@@ -26,10 +25,10 @@ function ProductsForm() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
-  const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
-  const [features, setFeatures] = useState("");
+  const [occasion, setOccasion] = useState("");
+  const [types, setTypes] = useState("");
   const [best, setBest] = useState(false);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -37,11 +36,9 @@ function ProductsForm() {
 
   useEffect(() => {
     dispatch(getCategories());
-    dispatch(getBrands());
   }, []);
 
   const { categories } = useSelector((state) => state.categories);
-  const { brands } = useSelector((state) => state.brands);
 
   const imagesHandling = (e) => {
     const files = Array.from(e.target.files);
@@ -65,10 +62,10 @@ function ProductsForm() {
     form.set("name", name);
     form.set("desc", desc);
     form.set("price", price);
-    form.set("brand", brand);
     form.set("category", category);
     form.set("stock", stock);
-    form.set("features", features);
+    form.set("occasion", occasion);
+    form.set('types',types)
     form.set("best", best);
 
     images.forEach((img) => {
@@ -78,7 +75,8 @@ function ProductsForm() {
     dispatch(newProduct(form))
       .then((res) => {
         if (res && res.success == 1) {
-          setOpenAlert({ open: true, message: product.message, success: true });
+          setOpenAlert({ open: true, message: res.message, success: true });
+          window.location.reload()
         }
       })
       .catch((err) => {
@@ -142,28 +140,17 @@ function ProductsForm() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel id="demo-simple-select-label">Select Brand</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              name="brand"
-              label="Brand"
-              variant="filled"
-              required
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-            >
-              {brands &&
-                brands.map((item, index) => {
-                  return (
-                    <MenuItem key={index} value={item.value}>
-                      {item.name}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
+
+          <TextField
+            fullWidth
+            variant="filled"
+            name="types"
+            label="Types"
+            size="small"
+            required
+            value={types}
+            onChange={(e) => setTypes(e.target.value)}
+          />
 
           <FormControl fullWidth required>
             <InputLabel id="demo-simple-select-label">
@@ -223,15 +210,13 @@ function ProductsForm() {
           <TextField
             fullWidth
             variant="filled"
-            label="Features"
-            name="features"
-            multiline
-            rows={4}
+            label="Occasion"
+            name="occasion"
             size="small"
             required
             margin="normal"
-            value={features}
-            onChange={(e) => setFeatures(e.target.value)}
+            value={occasion}
+            onChange={(e) => setOccasion(e.target.value)}
           />
 
           <Typography variant="h6">Selected Images</Typography>

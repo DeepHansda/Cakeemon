@@ -27,13 +27,11 @@ import ProductsContainer from "../ProductsContainer";
 import "./mainContainer.css";
 import Pagination from "react-js-pagination";
 import Loading from "../../Utils/Loading";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
-import { getBrands } from "../../../Redux/Actions/BrandActions";
 
 export default function MainContainer() {
   const [value, setValue] = React.useState([0, 1000]);
-  const [brand, setBrand] = React.useState("");
   const [ratings, setRatings] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
   const { offset, width } = useContext(ProjectContext);
@@ -54,18 +52,11 @@ export default function MainContainer() {
     setCategory(categoryParam === null ? "" : categoryParam);
   }, [categoryParam]);
 
-  
   // handling products------------------------------------------
- 
- 
+
   useEffect(() => {
-    dispatch(getProductsClient(keyword, currentPage, category,ratings, brand));
+    dispatch(getProductsClient(keyword, currentPage, category, ratings));
   }, [keyword, currentPage, category]);
-
-
-  useEffect(() => {
-    dispatch(getBrands())
-  },[])
 
   const productsStates = useSelector((state) => state.products);
   const {
@@ -77,11 +68,10 @@ export default function MainContainer() {
     error,
   } = productsStates;
 
-const {brands} = useSelector((state) => state.brands)
   // filter events------------------------------------------------
 
   const applyFilter = () => {
-    dispatch(getProductsClient(keyword, currentPage,category, ratings, brand));
+    dispatch(getProductsClient(keyword, currentPage, category, ratings));
   };
   const handlePageChange = (event) => {
     setCurrentPage(event);
@@ -94,10 +84,6 @@ const {brands} = useSelector((state) => state.brands)
     setValue(newValue);
   };
 
-  const handleBrandChange = (event, newValue) => {
-    setBrand(newValue);
-  };
-
   const handleRatingChange = (event, newValue) => {
     setRatings(newValue);
   };
@@ -108,7 +94,6 @@ const {brands} = useSelector((state) => state.brands)
 
   const drawerWidth = breakPo() ? "100%" : "300px";
 
-  
   const marks = [
     {
       value: 0,
@@ -185,54 +170,6 @@ const {brands} = useSelector((state) => state.brands)
                       max={1000}
                     />
                   </Container>
-
-                  {/* Brands sections */}
-
-                  <Box>
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<FiChevronDown />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography>Brands</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <RadioGroup
-                          aria-labelledby="demo-controlled-radio-buttons-group"
-                          name="controlled-radio-buttons-group"
-                          value={brand}
-                          onChange={handleBrandChange}
-                        >
-                          <List
-                            sx={{
-                              width: "100%",
-                              // maxWidth: 360,
-                              bgcolor: "background.paper",
-                              position: "relative",
-                              overflow: "auto",
-                              maxHeight: 300,
-                              // '& ul': { padding: 0 },
-                            }}
-                            dense
-                          >
-                            {brands.map((data, index) => {
-                              return (
-                                <ListItemButton key={index}>
-                                  <FormControlLabel
-                                    value={data.value}
-                                    control={<Radio size="small" />}
-                                    label={data.name}
-                                    sx={{ textTransform: "capitalize" }}
-                                  />
-                                </ListItemButton>
-                              );
-                            })}
-                          </List>
-                        </RadioGroup>
-                      </AccordionDetails>
-                    </Accordion>
-                  </Box>
 
                   <Box sx={{ marginTop: "10px" }}>
                     <Accordion>
@@ -331,11 +268,11 @@ const {brands} = useSelector((state) => state.brands)
                   />
                 )}
               </div>
-              {products.length != 0 ? (<ProductsContainer products={products} />):(
+              {products.length != 0 ? (
+                <ProductsContainer products={products} />
+              ) : (
                 <Container>
-                  <Typography variant="h5">
-                    Products not Found !
-                  </Typography>
+                  <Typography variant="h5">Products not Found !</Typography>
                 </Container>
               )}
 
@@ -343,7 +280,7 @@ const {brands} = useSelector((state) => state.brands)
                 <Pagination
                   activePage={currentPage}
                   itemsCountPerPage={productPerPage}
-                  totalItemsCount={productsCount}
+                  totalItemsCount={filteredProductsCount > 0 ? filteredProductsCount : productsCount}
                   onChange={handlePageChange}
                   nextPageText="Next"
                   prevPageText="Prev"

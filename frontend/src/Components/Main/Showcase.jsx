@@ -3,7 +3,7 @@ import React from 'react'
 import Slider from 'react-slick'
 import TopProduct from '../Products/TopProduct'
 
-function Showcase({title}) {
+function Showcase({title,data}) {
     const settings = {
         infinite: true,
         className: "center",
@@ -17,7 +17,7 @@ function Showcase({title}) {
           {
             breakpoint:1050,
             settings: {
-              slidesToShow:4,
+              slidesToShow:6,
               centerPadding: "-40px",
             }
           },
@@ -79,14 +79,13 @@ function Showcase({title}) {
 
         <div className="showcase-slider">
           <Slider {...settings}>
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
-            <TopProduct />
+            {
+              data && data.map((i,index) => {
+                return (
+                  <TopProduct product={i} key={index}/>
+                )
+              })
+            }
 
 
           </Slider>

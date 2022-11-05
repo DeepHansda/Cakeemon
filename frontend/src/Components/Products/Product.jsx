@@ -8,7 +8,6 @@ import { addToWishList } from "../../Redux/Actions/WishListActions";
 import { useSelector } from "react-redux";
 import Toast from "../Utils/Toast";
 import { addToCart } from "../../Redux/Actions/CartActions";
-import img from "../../assets/img/FRu3TDxmd2tS6A23f216.jpg"
 import { Button, Divider, Typography } from "@mui/material";
 
 export default function Product({ product }) {
@@ -23,7 +22,7 @@ export default function Product({ product }) {
   const { cartItems } = useSelector((state) => state.cart);
 
   const addToCartHandler = (id) => {
-    dispatch(addToCart(product._id))
+    dispatch(addToCart(product._id,1))
       .then((res) => {
         const exist = cartItems.find((item) => item.id == id);
 
@@ -84,7 +83,7 @@ export default function Product({ product }) {
         <div className="product-container">
           <div className="product-img-container">
             <div className="product-img" onClick={() => navigator(product._id)}>
-              <img src={img} alt={product.name} />
+              <img src={product.images[0].img} alt={product.name} />
             </div>
 
             <div className="product-details">

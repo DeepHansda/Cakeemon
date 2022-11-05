@@ -88,7 +88,6 @@
 
 .main-rapair {
   width: 100%;
-  background-image: url("../../assets/pexels-lukas-669615.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -209,6 +208,21 @@
   background-color:var(--primary-color);
   color:var(--main-color)
 }
+
+.custom-container{
+  position: relative;
+}
+
+.custom-container .custom-container-details{
+  font-family: "Poppins", sans-serif;
+}
+
+.custom-container .custom-container-details .custom-container-details-title{
+  font-size: 1.5em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
 @media only screen and (min-width: 768px) {
   .addi-container .addi-list {
     justify-content: space-between;
@@ -220,6 +234,25 @@
 .popular-category-container{
   width: 230px;
 }
+.custom-container .custom-container-details{
+  width: 400px;
+  padding: 20px;
+  position:absolute;
+  top: 50px;
+
+}
+
+.custom-container .custom-container-details .custom-container-details-title{
+  font-size:1.7em;
+  color: var(--primary-color);
+
+}
+
+.custom-container .custom-container-details .custom-container-details-para{
+  color: var(--primary-color);
+  font-size:13px
+}
+
 }
 @media only screen and (min-width: 1024px) {
   .showcase-container {
@@ -254,6 +287,14 @@
   .popular-category-container{
     width: 280px;
   }
+.custom-container .custom-container-details{
+  width: 450px;
+  top:150px;
+}
+
+.custom-container .custom-container-details .custom-container-details-title{
+  font-size: 1.8em;
+}
 }
 @media only screen and (min-width: 1280px) {
   .main-categories-container,
@@ -277,5 +318,14 @@
   }
   .popular-category-container{
     width: 300px;
+  }
+
+  .custom-container .custom-container-details{
+    width: 580px;
+    top:150px;
+  }
+  
+  .custom-container .custom-container-details .custom-container-details-title{
+    font-size: 2em;
   }
 }

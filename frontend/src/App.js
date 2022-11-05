@@ -29,6 +29,7 @@ import AdminOrderDetails from "./ADMIN/Components/Orders/AdminOrderDetails";
 import Customers from "./ADMIN/Components/Customers/Customers";
 import AdminProducts from "./ADMIN/Components/Products/AdminProducts";
 import ExtraControll from "./ADMIN/Components/ExtraControl/ExtraControll";
+import { getCategories } from "./Redux/Actions/CategoriesAction";
 export const ProjectContext = createContext();
 function App() {
   const [offset, setOffset] = useState(0);
@@ -50,6 +51,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+  
+      dispatch(getCategories());
     // handling screen width
     function handleScroll() {
       setOffset(window.pageYOffset);

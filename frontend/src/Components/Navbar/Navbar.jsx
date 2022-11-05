@@ -30,7 +30,7 @@ export default function Navbar() {
   const [openBar, setOpenBar] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishItems } = useSelector((state) => state.wishList);
-  const {categories} = useSelector((state) => state.categories)
+  const { categories } = useSelector((state) => state.categories);
 
   const data = [
     {
@@ -54,22 +54,19 @@ export default function Navbar() {
     },
   ];
   return (
-    <div
-      className="navbar"
-      style={{ position: `${offset > 180 ? "fixed" : "relative"}}` }}
-    >
+    <div className="navbar">
       <nav className="navbar-container">
         <div className="navbar-upper">
           <div className="logo">
             <img src={logo} alt="logo" />
           </div>
 
-          
-
           <div className="nav-user-options">
-          {width > 700 && <div className="navbar-upper-search">
-           <SearchBar />
-          </div>}
+            {width > 700 && (
+              <div className="navbar-upper-search">
+                <SearchBar />
+              </div>
+            )}
             {data.map((item, index) => {
               return (
                 <li key={index}>
@@ -143,8 +140,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        <Categories name={"Brands"} items={categories}/>
-
+        <Categories name={"Categories"} items={categories} />
       </nav>
     </div>
   );

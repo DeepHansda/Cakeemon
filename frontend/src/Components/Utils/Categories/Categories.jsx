@@ -43,11 +43,7 @@ export default function Categories({ items, name }) {
   const { navigator } = useContext(ProjectContext);
 
   const navi = (value) => {
-    navigator(
-      name === "Categories"
-        ? `allProducts?category=${value}`
-        : `allProducts?brand=${value}`
-    );
+    navigator(`/allProducts?category=${value}`);
   };
   return (
     <div className="categories">

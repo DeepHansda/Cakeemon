@@ -1,7 +1,6 @@
 import { Box, Container, Divider } from '@mui/material'
 import React from 'react'
 import Banners from './Banners'
-import Brands from './Brands'
 import Categories from './Categories'
 
 function ExtraControll() {
@@ -13,7 +12,6 @@ function ExtraControll() {
     <Divider/>
     <Container sx={{ display: "flex",mt:4}}>
       <Categories/>
-      <Brands/>
     </Container>
     </>
   )

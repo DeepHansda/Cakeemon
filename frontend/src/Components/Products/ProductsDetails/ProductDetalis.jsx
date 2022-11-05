@@ -5,7 +5,7 @@ import { FiHeart, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { ProjectContext } from "../../../App";
 import Star from "../../Utils/Star";
 import { useParams } from "react-router-dom";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   addReview,
   getProductDetails,
@@ -37,7 +37,7 @@ export default function ProductDetalis() {
   const { offset, width, dispatch, setOpenAlert } = useContext(ProjectContext);
   const { id } = useParams();
   const { wishItems } = useSelector((state) => state.wishList);
-  const { cartSuccess, cartItems } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewComment, setReviewComment] = useState("");
   const [openReviewModal, setOpenReviewModal] = useState(false);
@@ -64,11 +64,11 @@ export default function ProductDetalis() {
     setQuantity(qty);
   };
 
-  const addToCartHandler = () => {
+  const addToCartHandler = (id) => {
     if (product.stock > 0) {
-      dispatch(addToCart(product._id, quantity))
+      dispatch(addToCart(id, quantity))
         .then((res) => {
-          const exist = cartItems.find((item) => item.id == product._id);
+          const exist = cartItems.find((item) => item.id == id);
           if (exist) {
             setOpenAlert({
               open: true,
@@ -141,8 +141,7 @@ export default function ProductDetalis() {
             success: true,
           });
 
-    dispatch(getProductDetails(id));
-          
+          dispatch(getProductDetails(id));
         }
       })
       .catch((err) => {
@@ -171,18 +170,27 @@ export default function ProductDetalis() {
             }`,
           }}
         >
-          <div className="product-details-slider" ref={product_details_slider} style={{backgroundImage:`url(${product.images && product.images[0].img})`}}>
+          <div
+            className="product-details-slider"
+            ref={product_details_slider}
+            style={{
+              backgroundImage: `url(${
+                product.images && product.images[0].img
+              })`,
+            }}
+          >
             <div className="product-images">
-              {product.images && product.images.map((item, index) => {
-                return (
-                  <img
-                    key={index}
-                    src={item.img}
-                    alt="product image"
-                    onClick={() => imageGallery(item.img)}
-                  />
-                );
-              })}
+              {product.images &&
+                product.images.map((item, index) => {
+                  return (
+                    <img
+                      key={index}
+                      src={item.img}
+                      alt="product image"
+                      onClick={() => imageGallery(item.img)}
+                    />
+                  );
+                })}
             </div>
           </div>
 
@@ -216,7 +224,7 @@ export default function ProductDetalis() {
               <Button
                 variant="outlined"
                 className="btn cart-btn"
-                onClick={() => addToCartHandler()}
+                onClick={() => addToCartHandler(product._id)}
               >
                 {" "}
                 <p>
@@ -241,15 +249,17 @@ export default function ProductDetalis() {
         <section className="product-all-details section">
           <section className="detail-des">
             <h2 className="heading">description</h2>
-            <p className="des">{product.desc}</p>
+            {product.desc &&
+              product.desc.map((i, index) => {
+                return (
+                  <li key={index} style={{ listStyleType: "." }}>
+                    <p className="des">{i.item}</p>
+                  </li>
+                );
+              })}
           </section>
 
-          <section className="product-spec">
-            <h2 className="product-spec-heading">specification</h2>
-            <p className="des">
-              {product.features && product.features}
-            </p>
-          </section>
+          
           <section className="reviews-section">
             <Paper variant="outlined">
               <Container>
@@ -342,6 +352,7 @@ export default function ProductDetalis() {
           </section>
         </section>
       </div>
+
     </Fragment>
   );
 }

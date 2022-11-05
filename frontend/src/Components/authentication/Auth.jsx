@@ -14,8 +14,12 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FiEye, FiEyeOff, FiUser } from "react-icons/fi";
 import {
+  FormControl,
+  FormLabel,
   IconButton,
   Paper,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import { clearErrors, signin, signUp } from "../../Redux/Actions/UserActions";
 import { useSelector } from "react-redux";
@@ -50,11 +54,13 @@ export default function SignUp() {
 
   const [first_name,setFirst_name] = useState('')
   const [last_name,setLast_name] = useState('')
+  const [genders,setGenders] = useState('')
   const [email,setEmail] = useState('')
   const [mobile_number,setMobile_number] = useState('')
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
 
+  console.log(genders)
 
   const {dispatch,navigator,setOpenAlert,location} = useContext(ProjectContext)
   const {loading ,isAuthenticated, user ,error} = useSelector((state)=>state.user)
@@ -70,6 +76,7 @@ export default function SignUp() {
 
     data.set('first_name',first_name)
     data.set('last_name',last_name)
+    data.set('genders',genders)
     data.set('email',email)
     data.set('mobile_number',mobile_number)
     data.set('password',password)
@@ -167,6 +174,35 @@ export default function SignUp() {
                     />
                   </Grid>
                 )}
+
+
+{isSignUp && (
+                  <Grid item xs={12} sm={6}>
+                    <FormControl
+                component="fieldset"
+                name="genders"
+                variant="standard"
+                value={genders}
+                onChange={(e)=>setGenders(e.target.value)}
+              >
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup row>
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio size="small" />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio size="small" />}
+                    label="Female"
+                  />
+                </RadioGroup>
+              </FormControl>
+                  </Grid>
+                )}
+
+
                 <Grid item xs={12}>
                   <TextField
                     required

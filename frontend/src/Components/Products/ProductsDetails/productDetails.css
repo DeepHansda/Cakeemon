@@ -172,6 +172,9 @@
 .reviews-section {
   margin-top: 20px;
 }
+.product-information .product-all-details .detail-des li{
+  list-style-type:circle;
+}
 @media only screen and (min-width: 600px) {
   .product-information .product-details-main {
     flex-direction: row;
@@ -223,10 +226,7 @@
     top: 0;
     width: 55%;
   }
-  .product-information .product-all-details .detail-des {
-    /* flex: 0 0 60%; */
-    /* margin-right:20px */
-  }
+  
   .product-information .product-all-details .product-spec {
     /* flex: 0 0 40%; */
   }

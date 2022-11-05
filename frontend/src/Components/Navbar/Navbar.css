@@ -1,5 +1,6 @@
 .navbar {
   width: 100%;
+  box-shadow: var(--primary-shadow);
 }
 
 .navbar-container .navbar-upper {

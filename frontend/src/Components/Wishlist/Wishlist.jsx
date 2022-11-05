@@ -17,13 +17,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishList } from "../../Redux/Actions/WishListActions";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import img from "../../assets/p2.jpg";
 import "./Wishlist.css";
+import { useNavigate } from "react-router-dom";
 function Wishlist() {
   const { wishItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
-  console.log(wishItems);
   const wishCount = wishItems.length;
+
+  const navigate = useNavigate();
+  const navigator = (id) => {
+    navigate(`/productDetails/${id}`);
+  };
   return (
     <Fragment>
       <Navbar wishCount={wishCount} />
@@ -80,6 +84,7 @@ function Wishlist() {
                   sx={{ width: 151, height: 165, marginRight: "5px" }}
                   image={item.img}
                   alt="Live from space album cover"
+                  onClick={() =>navigator(item.product)}
                 />
                 <Divider orientation="vertical" flexItem />
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -88,6 +93,7 @@ function Wishlist() {
                       component="div"
                       variant="h5"
                       sx={{ textTransform: "capitalize" }}
+                      onClick={() =>navigator(item.product)}
                     >
                       {item.name}
                     </Typography>

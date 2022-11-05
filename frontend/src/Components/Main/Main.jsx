@@ -7,14 +7,13 @@ import Categories from "../Utils/Categories/Categories";
 
 import Navbar from "../Navbar/Navbar";
 import Query from "../Utils/Query";
-import { getBrands } from "../../Redux/Actions/BrandActions";
-import { getCategories } from "../../Redux/Actions/CategoriesAction";
 import { useDispatch, useSelector } from "react-redux";
 import birthDay from "../../assets/img/birthday-specials.jpg";
 import christmas from "../../assets/img/christmas.jpeg";
 import wedding from "../../assets/img/wedding-specials.jpg";
 import Additional from "./Additional";
 import {
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -25,16 +24,19 @@ import {
   Typography,
 } from "@mui/material";
 import Showcase from "./Showcase";
+import { getProductsAdmin } from "../../Redux/Actions/ProductsActions";
 
 export default function Main() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getBrands());
+    dispatch(getProductsAdmin())
   }, []);
 
   const { categories } = useSelector((state) => state.categories);
-  const { brands } = useSelector((state) => state.brands);
+  const { products,loading } = useSelector((state) => state.products)
+  
+  const chocolateCakes = products && products.filter((f)=>f.category=='chocolates').slice(0,10)
+  const PopularCakes = products && products.filter((f)=>f.top===true).slice(0,10)
 
   return (
     <Fragment>
@@ -50,7 +52,7 @@ export default function Main() {
 
         <Additional />
 
-        <Showcase title="Popular Cakes." />
+        <Showcase title="Popular Cakes." data={PopularCakes}/>
 
         <Paper variant="outlined" sx={{ mt: 5, p: 5 }}>
           <Container maxWidth="lg" sx={{ p: 1 }}>
@@ -92,7 +94,7 @@ export default function Main() {
           </Container>
         </Paper>
 
-        <Showcase title="Chocolate Cakes." />
+        <Showcase title="Chocolate Cakes." data={chocolateCakes}/>
 
         <Paper variant="outlined">
           <Container maxWidth="lg">
@@ -137,9 +139,9 @@ export default function Main() {
           </Container>
         </Paper>
 
-        <Paper variant="outlined">
+        <Paper variant="outlined" sx={{margin:'25px 0',padding:'20px 0'}}>
           <Container maxWidth="lg">
-            <div className="custome-container">
+            <div className="custom-container">
             <div className="custom-container-img">
             <img src="https://res.cloudinary.com/manjiro/image/upload/v1667021857/samples/front-view-delicious-chocolate-cake-stand-with-copy-space_krnzeu.jpg" alt="" />
             </div>
@@ -150,9 +152,13 @@ export default function Main() {
             </div>
 
             <div className="custom-container-details-para">
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa nulla nostrum molestiae, cupiditate quasi quia tempore eligendi iure non nisi esse consequatur velit dicta eum.</p>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa nulla nostrum molestiae, cupiditate quasi quia tempore eum.</p>
             </div>
+            <Button variant="outlined" size="small" sx={{ mt:1}}>Customize Cake.</Button>
+
             </div>
+
+           
               
             </div>
           </Container>

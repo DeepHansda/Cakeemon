@@ -7,6 +7,7 @@ module.exports = {
         const {
             first_name,
             last_name,
+            genders,
             email,
             mobile_number,
             password,
@@ -15,6 +16,7 @@ module.exports = {
 
         const data = {
             full_name : first_name+' '+last_name,
+            genders:genders,
             email:email,
             mobile_number: mobile_number,
             password:password,

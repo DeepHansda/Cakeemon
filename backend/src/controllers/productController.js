@@ -24,7 +24,6 @@ module.exports = {
         img: result.url,
       });
     }
-    console.log(req.user)
 
     req.body.images = imgLinks;
     // res.body.createdBy = req.user._id;
@@ -32,7 +31,7 @@ module.exports = {
     const product = new ProductModel(req.body);
     await product.save((err, result) => {
       if (err) {
-        // console.log(err)
+        console.log(err)
         return next(new ErrorHandler("something went wrong", 401));
       }
 
@@ -203,7 +202,6 @@ module.exports = {
 
   createReview: catchAsyncErrors(async (req, res, next) => {
     const { rating, comment, product_id } = req.body;
-    console.log(req.user);
     const review = {
       user: req.user._id,
       name: req.user.full_name,
@@ -309,4 +307,53 @@ module.exports = {
       }
     );
   }),
+
+  productUtil : catchAsyncErrors(async(req, res, next)=>{
+   await ProductModel.find().exec((err, result)=>{
+    if(err) {
+      console.log(err);
+      return next(new ErrorHandler(err.message, 401));
+    }
+
+    const random = (min = 0 , max= 1) =>{
+      var diff = max - min;
+      let rand = Math.random()
+      rand = Math.floor(rand* diff)
+      rand = rand + min
+      return rand
+    }
+    const occ = [true,false]
+    result.forEach(async function(data) {
+
+    if(data.ratings>='4.8'){
+      // console.log(occ[random()])
+      await ProductModel.findByIdAndUpdate({
+        "_id": data._id,
+    }, {
+        "$set": {
+          top:true
+        }
+    });
+    }
+
+    else{
+      await ProductModel.findByIdAndUpdate({
+        "_id": data._id,
+    }, {
+        "$set": {
+          top:false
+        }
+    });
+    }
+      
+    })
+
+    // console.log(result)
+
+
+      res.status(200).json({
+        message: 'Product saved successfully'
+      })
+   })
+  })
 };

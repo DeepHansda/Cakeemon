@@ -3,27 +3,36 @@ import {
   Chip,
   Container,
   Divider,
+  IconButton,
   Input,
   Paper,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useContext } from "react";
 import { ProjectContext } from "../../App";
 import { addToCart, removeFromCart } from "../../Redux/Actions/CartActions";
 import "./cart.css";
-import img from "../../assets/p2.jpg";
 import Toast from "../Utils/Toast";
 import { FiTrash } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 export default function CartCard({ item }) {
-  const { setOpenAlert ,dispatch } = useContext(ProjectContext);
+  const { setOpenAlert, dispatch } = useContext(ProjectContext);
 
-  console.log(item);
+
+  const navigate = useNavigate();
+  const navigator = (id) => {
+    navigate(`/productDetails/${id}`);
+  };
   // Increase quantity
   // const [quantity, setQuantity] = useState(1);
   const increaseQuantity = (id, quantity, stock) => {
     const newQty = quantity + 1;
-    if (stock <= quantity) return setOpenAlert({open:true,message:'stock is limited',success:false});
+    if (stock <= quantity)
+      return setOpenAlert({
+        open: true,
+        message: "stock is limited",
+        success: false,
+      });
     dispatch(addToCart(id, newQty));
   };
 
@@ -33,17 +42,19 @@ export default function CartCard({ item }) {
     dispatch(addToCart(id, newQty));
   };
   return (
-    <Paper variant="outlined" sx={{ marginTop: {xs:"15px",md:'0'},width:'auto' }}>
-      <Toast/>
+    <Paper
+      variant="outlined"
+      sx={{ marginTop: { xs: "15px", md: "0" }, width: "auto" }}
+    >
+      <Toast />
       <div className="cart-paper-container">
         <div className="cart-paper-desc">
           <div className="cart-paper-img">
-            <img src={img} />
+            <img src={item.img} onClick={() =>navigator(item.id)}/>
           </div>
 
           <div className="cart-paper-title">
-            <Typography variant="h4">{item.name}</Typography>
-            
+            <Typography variant="h4" onClick={() =>navigator(item.id)}>{item.name}</Typography>
           </div>
         </div>
 
@@ -54,6 +65,7 @@ export default function CartCard({ item }) {
               <Chip
                 label="+"
                 variant="outlined"
+                color="primary"
                 onClick={() =>
                   increaseQuantity(item.id, item.quantity, item.stock)
                 }
@@ -62,28 +74,33 @@ export default function CartCard({ item }) {
               <Chip
                 label="-"
                 variant="outlined"
+                color="primary"
                 onClick={() => decreaseQuantity(item.id, item.quantity)}
               />
             </div>
           </div>
 
-          <div className="cart-paper-price" >
-        <Typography variant="body1" sx={{display: 'flex',}}>₹{item.price * item.quantity}
-        <Box sx={{margin:'0 10px',cursor: "pointer"}} onClick={()=>dispatch(removeFromCart(item.id))}>
-          <FiTrash/>
-        </Box >
-        </Typography>
-
-        
-      </div>
+          <div className="cart-paper-price">
+            <Typography variant="body1" sx={{ display: "flex" }}>
+              ₹{item.price * item.quantity}
+              <Box
+                sx={{ margin: "0 10px", cursor: "pointer" }}
+                
+              >
+                <IconButton color="primary" onClick={() => dispatch(removeFromCart(item.id))}>
+                  <FiTrash />
+                </IconButton>
+              </Box>
+            </Typography>
+          </div>
         </div>
       </div>
     </Paper>
   );
 
-//   function ProductPrice(price, quantity) {
-//     return (
-      
-//     );
-//   }
+  //   function ProductPrice(price, quantity) {
+  //     return (
+
+  //     );
+  //   }
 }

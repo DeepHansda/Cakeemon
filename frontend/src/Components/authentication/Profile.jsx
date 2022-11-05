@@ -3,6 +3,7 @@ import {
   Badge,
   Box,
   Button,
+  Chip,
   Container,
   Divider,
   Grid,
@@ -20,15 +21,27 @@ import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Utils/Loading";
 import Toast from "../Utils/Toast";
+import man from "../../assets/img/man.png"
+import woman from "../../assets/img/woman.png"
+
+
+
+
+
+
+
+
+
+
 function Profile() {
   const { loading, isAuthenticated, user, error } = useSelector(
     (state) => state.user
   );
-  
-  const nav = useLocation()
+
+  const nav = useLocation();
   const { navigator, dispatch, setOpenAlert } = useContext(ProjectContext);
-  const {cartItems} = useSelector(state=>state.cart)
-  const {wishItems} = useSelector((state)=>state.wishList)
+  const { cartItems } = useSelector((state) => state.cart);
+  const { wishItems } = useSelector((state) => state.wishList);
   const handleLogOut = () => {
     dispatch(logout());
   };
@@ -38,13 +51,13 @@ function Profile() {
       name: "cart",
       icon: FiShoppingCart(),
       link: "/cart",
-      count:cartItems.length
+      count: cartItems.length,
     },
     {
       name: "wishlist",
       icon: FiHeart(),
       link: "/wishlist",
-      count:wishItems.length
+      count: wishItems.length,
     },
     {
       name: "orders",
@@ -52,7 +65,7 @@ function Profile() {
       link: "/myOrders",
     },
   ];
-console.log(nav.state?.previousPath)
+  console.log(nav.state?.previousPath);
   useEffect(() => {
     if (error) {
       setOpenAlert({ open: true, message: error.message, success: false });
@@ -62,7 +75,7 @@ console.log(nav.state?.previousPath)
   return (
     <Fragment>
       <Navbar />
-      <div className="profile" style={{height:'100vh'}}>
+      <div className="profile" style={{ height: "100vh" }}>
         {loading && <Loading />}
         <Toast />
         <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -79,7 +92,7 @@ console.log(nav.state?.previousPath)
             >
               <Avatar
                 alt="Remy Sharp"
-                src="https://mui.com/static/images/avatar/3.jpg"
+                src={user.genders==="male" ? man : woman}
                 sx={{ width: { sm: 40, md: 60 }, height: { sm: 40, md: 60 } }}
               />
 
@@ -91,6 +104,8 @@ console.log(nav.state?.previousPath)
               >
                 {user.full_name}
               </Typography>
+
+              <Chip label={user.genders} sx={{ textTransform: "capitalize" }} />
             </Box>
 
             <Box

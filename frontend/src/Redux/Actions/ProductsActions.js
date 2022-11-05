@@ -17,13 +17,13 @@ import {
 } from '../Common/Constants'
 import {ProductsServices} from '../Common/ProductsServices'
 
-export const getProductsClient = (keyword , currentPage, category ,ratings ,brand) => async (dispatch) => {
+export const getProductsClient = (keyword , currentPage, category ,ratings ) => async (dispatch) => {
     try {
         dispatch({
             type: ALL_PRODUCT_REQUEST
         })
 
-        const res = await ProductsServices.getProductsClient(keyword , currentPage, category ,ratings ,brand)
+        const res = await ProductsServices.getProductsClient(keyword , currentPage, category ,ratings )
 
         dispatch({
             type: ALL_PRODUCT_SUCCESS,
@@ -47,10 +47,9 @@ export const getProductsAdmin = () => async (dispatch) => {
         })
 
         const res = await ProductsServices.getAllProducts()
-        console.log(res)
         dispatch({
             type: ADMIN_PRODUCT_SUCCESS,
-            payload: res.data
+            payload: res.data.result
         })
         // return Promise.resolve(res.data)
     } catch (err) {
@@ -70,7 +69,6 @@ export const getProductDetails = (id) => async (dispatch) => {
         })
 
         const res = await ProductsServices.getProductDetails(id)
-        console.log(res)
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
             payload: res.data.product

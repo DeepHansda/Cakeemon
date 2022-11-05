@@ -23,7 +23,6 @@ import {
   import { ProjectContext } from "../../../App";
 import { getProductsClient } from '../../../Redux/Actions/ProductsActions';
 import { getCategories } from '../../../Redux/Actions/CategoriesAction';
-import { getBrands } from '../../../Redux/Actions/BrandActions';
 import { useSelector } from 'react-redux';
 
 
@@ -38,12 +37,10 @@ function ProductsDrawer() {
 
     useEffect(() => {
       dispatch(getCategories())
-      dispatch(getBrands())
   
     },[])
   
     const {categories} = useSelector((state) => state.categories)
-    const {brands} = useSelector((state) => state.brands)
 
     
 
@@ -142,49 +139,7 @@ function ProductsDrawer() {
   
                     {/* Brands sections */}
   
-                    <Box>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<FiChevronDown />}
-                          aria-controls="panel1a-content"
-                          id="panel1a-header"
-                        >
-                          <Typography>Brands</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <RadioGroup
-                            aria-labelledby="demo-controlled-radio-buttons-group"
-                            name="controlled-radio-buttons-group"
-                            value={brand}
-                            onChange={handleBrandChange}
-                          >
-                            <List
-                              sx={{
-                                width: "100%",
-                                bgcolor: "background.paper",
-                                position: "relative",
-                                overflow: "auto",
-                                maxHeight: 300,
-                              }}
-                              dense
-                            >
-                              {brands.map((data, index) => {
-                                return (
-                                  <ListItemButton key={index}>
-                                    <FormControlLabel
-                                      value={data.value}
-                                      control={<Radio size="small" />}
-                                      label={data.value}
-                                      sx={{ textTransform: "capitalize" }}
-                                    />
-                                  </ListItemButton>
-                                );
-                              })}
-                            </List>
-                          </RadioGroup>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Box>
+                    
   
                     <Box sx={{ marginTop: "10px" }}>
                       <Accordion>
