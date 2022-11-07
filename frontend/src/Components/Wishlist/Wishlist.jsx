@@ -19,6 +19,7 @@ import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import "./Wishlist.css";
 import { useNavigate } from "react-router-dom";
+import MetaData from "../Utils/MetaData";
 function Wishlist() {
   const { wishItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ function Wishlist() {
   };
   return (
     <Fragment>
+      <MetaData title="Wishlist"/>
+
       <Navbar wishCount={wishCount} />
       <div className="wishlist">
         <Paper variant="outlined">

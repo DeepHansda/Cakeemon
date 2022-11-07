@@ -62,21 +62,21 @@ export default function CartCard({ item }) {
         <div className="cart-paper-numbers">
           <div className="cart-paper-quantity">
             <div className="cartInput">
-              <Chip
-                label="+"
+              <IconButton
                 variant="outlined"
                 color="primary"
                 onClick={() =>
                   increaseQuantity(item.id, item.quantity, item.stock)
                 }
-              />
+              >
+                +
+              </IconButton>
               <Input type="number" readOnly value={item.quantity} />
-              <Chip
-                label="-"
+              <IconButton
                 variant="outlined"
                 color="primary"
                 onClick={() => decreaseQuantity(item.id, item.quantity)}
-              />
+              >-</IconButton>
             </div>
           </div>
 

@@ -26,6 +26,7 @@ import Toast from "../Utils/Toast";
 import { createOrders } from "../../Redux/Actions/OrderActions";
 import { paymentVerify } from "../../Redux/Actions/PaymentActions";
 import Loading from "../Utils/Loading";
+import MetaData from "../Utils/MetaData";
 
 const methods = [
   { name: "UPI", type: "upi", logo: Upi },
@@ -240,6 +241,8 @@ function Payment() {
 
   return (
     <Fragment>
+      <MetaData title="Payment Details"/>
+
       <Toast />
       {loading && <Loading />}
       <OrderStepper activeStep={2} />

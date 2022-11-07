@@ -10,6 +10,7 @@ import {
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import MetaData from "../Utils/MetaData";
 import OrderStepper from "../Utils/OrderStepper";
 
 function ReviewOrder() {
@@ -44,6 +45,8 @@ function ReviewOrder() {
   };
   return (
     <Fragment>
+      <MetaData title="Review Order"/>
+
       <OrderStepper activeStep={1}/>
     <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
       <Paper variant="outlined" sx={{ padding: "20px" }}>

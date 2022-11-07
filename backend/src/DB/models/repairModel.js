@@ -3,10 +3,8 @@ const validator = require("validator");
 
 const RepairSchema = new mongoose.Schema({
   repairImg: {
-    
-      img: { type: String,  },
-      public_id: { type: String,},
-    
+    img: { type: String },
+    public_id: { type: String },
   },
   first_name: {
     type: String,
@@ -43,15 +41,14 @@ const RepairSchema = new mongoose.Schema({
     type: String,
     required: [true, "please select the model name or number"],
   },
-  description:{
+  description: {
     type: String,
-    required: [true, "please select the description"]
+    required: [true, "please select the description"],
   },
   repair_type: {
     type: String,
     required: [true, "please select the type of repair"],
   },
-
 });
 
 module.exports = mongoose.model("repair", RepairSchema);

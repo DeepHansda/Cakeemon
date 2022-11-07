@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import img from "../../assets/img.jpg"
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import MetaData from "../Utils/MetaData";
 
 function AboutUs() {
     const style={
@@ -22,6 +23,8 @@ function AboutUs() {
     }
   return (
     <Fragment>
+      <MetaData title="About Us."/>
+
         <Navbar/>
     <div class="about-section">
       <Container sx={{ margin: "20px auto" }}>

@@ -1,4 +1,6 @@
 import { createContext, useEffect, useState } from "react";
+import Lottie from "lottie-react";
+import groovyWalkAnimation from "./10181-groovy-walk-cycle.json";
 import "./App.css";
 import Main from "./Components/Main/Main";
 import "slick-carousel/slick/slick.css";
@@ -19,7 +21,7 @@ import Profile from "./Components/authentication/Profile";
 import Checkout from "./Components/Orders/Checkout";
 import MyOrders from "./Components/Orders/MyOrders";
 import ConfirmOrder from "./Components/Orders/ConfirmOrder";
-import BookRepair from "./Components/BookRepair/BookRepair";
+import BookRepair from "./Components/Customize/CustomizeCake";
 import ContactUs from "./Components/ContactUs/ContactUs";
 import AboutUs from "./Components/About/AboutUs";
 import Dashboard from "./ADMIN/Components/Dashboard/Dashboard";
@@ -30,7 +32,14 @@ import Customers from "./ADMIN/Components/Customers/Customers";
 import AdminProducts from "./ADMIN/Components/Products/AdminProducts";
 import ExtraControll from "./ADMIN/Components/ExtraControl/ExtraControll";
 import { getCategories } from "./Redux/Actions/CategoriesAction";
+import CustomizeCake from "./Components/Customize/CustomizeCake";
 export const ProjectContext = createContext();
+
+
+
+
+
+
 function App() {
   const [offset, setOffset] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
@@ -39,6 +48,10 @@ function App() {
     message:"success",
     success:true,
   });
+
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
+
 
   // redirect or navigation handling
   const navigate = useNavigate();
@@ -51,6 +64,17 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+
+
+    setTimeout(() => {
+      fetch("https://cakeemon.vercel.app/")
+        .then((response) => {console.log(response) 
+        setloading(true);})
+        .then((json) => {
+          console.log(json);
+          
+        });
+    }, 4000);
   
       dispatch(getCategories());
     // handling screen width
@@ -84,9 +108,27 @@ function App() {
     location: location
   };
 
-
+  const defaultOptions1 = {
+    loop: true,
+    autoplay: true,
+    animationData: groovyWalkAnimation,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const style = {
+    height: 300,
+  };
   return (
-    <ProjectContext.Provider value={states}>
+    <>
+    { !loading ? (
+      <Lottie loop = {true}
+      autoplay = {true}
+      animationData = {groovyWalkAnimation}
+      style={style} />
+    ):(
+
+      <ProjectContext.Provider value={states}>
       <div className="App">
         <div className="routes">
         <Routes>
@@ -95,7 +137,7 @@ function App() {
           <Route path="/allProducts" element={<MainContainer />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/bookRepair" element={<BookRepair />} />
+          <Route path="/custom" element={<CustomizeCake />} />
           <Route path="/contactUS" element={<ContactUs />} />
           <Route path="/aboutUs" element={<AboutUs />} />
 
@@ -127,6 +169,8 @@ function App() {
         </div>
       </div>
     </ProjectContext.Provider>
+    )}
+    </>
   );
 }
 

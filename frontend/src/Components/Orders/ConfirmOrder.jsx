@@ -13,6 +13,7 @@ import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { ProjectContext } from "../../App";
 import accept from "../../assets/icons/accept.png";
+import MetaData from "../Utils/MetaData";
 import OrderStepper from "../Utils/OrderStepper";
 function ConfirmOrder() {
   // const {order} = useSelector((state) => state.order)
@@ -63,6 +64,8 @@ function ConfirmOrder() {
   const date = new Date(order.createdAt);
   return (
     <Fragment>
+      <MetaData title="Confirm Order"/>
+
       <OrderStepper activeStep={3}/>
     <div className="confirmOrder" style={{ marginTop: "20px" }}>
       <Container maxWidth="sm">

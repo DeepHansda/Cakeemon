@@ -18,6 +18,7 @@ import {
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import OrderStepper from "../Utils/OrderStepper";
+import MetaData from "../Utils/MetaData"
 
 export default function Checkout() {
   const { dispatch, navigator } = useContext(ProjectContext);
@@ -46,6 +47,7 @@ export default function Checkout() {
   };
   return (
     <Fragment>
+      <MetaData title="Checkout"/>
       <Navbar />
       <OrderStepper activeStep={0}/>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>

@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { ProjectContext } from "../../App";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import MetaData from "../Utils/MetaData";
 import "./cart.css";
 import CartCard from "./CartCard";
 
@@ -29,6 +30,8 @@ function Cart() {
   };
   return (
     <Fragment>
+      <MetaData title="Cart"/>
+
       <Navbar />
       <div className="cart">
         <Box sx={{ width: "100%" }}>

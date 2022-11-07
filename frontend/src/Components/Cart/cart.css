@@ -4,7 +4,6 @@
   outline: none;
   border: none;
   margin: 20px auto;
-  height: 100vh;
 }
 
 .cart-paper-container .cart-paper-desc,
@@ -18,7 +17,7 @@
 }
 .cart-paper-container .cart-paper-numbers {
   margin: 10px 0;
-  padding: 0 40px;
+  padding: 0 5px;
   justify-content: space-between;
 }
 .cart-paper-container
@@ -67,6 +66,9 @@
 @media only screen and (min-width: 600px){
 .cart-paper-container .cart-paper-img {
   flex:10%
+}
+.cart-paper-container .cart-paper-numbers {
+  padding: 0 40px;
 }
 }
 @media only screen and (min-width: 1280px){

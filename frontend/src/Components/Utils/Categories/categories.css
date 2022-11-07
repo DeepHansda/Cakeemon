@@ -3,7 +3,7 @@
 }
  .categories .categories-container {
     width:100%;
-    padding:10px;
+    padding:10px 24px;
     background-color:var(--primary-color)
 
  }
@@ -28,8 +28,8 @@
 }
 .cate-item .cate-item-img{
     margin:0 auto;
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
     overflow: hidden;
     border-radius: 100%;
 }
@@ -37,12 +37,10 @@
     max-width: 100%;
 }
 .cate-item .cate-item-title{
-    font-family: 'Poppins', sans-serif;
-    font-weight:lighter;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-transform:capitalize;
     font-size:10px;
     margin-top: 5px;
-    color:var(--secondary-color)
 }
 
 @media only screen and (min-width:768px){

@@ -98,6 +98,10 @@ export default function Product({ product }) {
                 <Typography variant="body1">₹{product.price}</Typography>
               </div>
 
+              <div className="product-details-price">
+                <Typography variant="body1">₹{product.occasion}</Typography>
+              </div>
+
               <div className="product-details-ratings">
                 <Star ratings={product.ratings} />
               </div>

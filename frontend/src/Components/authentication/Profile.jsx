@@ -21,17 +21,9 @@ import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Utils/Loading";
 import Toast from "../Utils/Toast";
-import man from "../../assets/img/man.png"
-import woman from "../../assets/img/woman.png"
-
-
-
-
-
-
-
-
-
+import man from "../../assets/img/man.png";
+import woman from "../../assets/img/woman.png";
+import MetaData from "../Utils/MetaData";
 
 function Profile() {
   const { loading, isAuthenticated, user, error } = useSelector(
@@ -74,6 +66,7 @@ function Profile() {
   }, [error]);
   return (
     <Fragment>
+      <MetaData title="Profile"/> 
       <Navbar />
       <div className="profile" style={{ height: "100vh" }}>
         {loading && <Loading />}
@@ -91,11 +84,12 @@ function Profile() {
               }}
             >
               <Avatar
-                alt="Remy Sharp"
-                src={user.genders==="male" ? man : woman}
-                sx={{ width: { sm: 40, md: 60 }, height: { sm: 40, md: 60 } }}
+                alt={user.full_name}
+                src={user.avatar.img || ("male" ? man : woman)}
+                sx={{ width: { xs: 80, md: 85 }, height: { xs: 80, md: 85 } }}
               />
 
+              <Chip label={user.genders} sx={{ textTransform: "capitalize",mt:1 }} />
               <Typography
                 component="h1"
                 variant="h4"
@@ -104,8 +98,6 @@ function Profile() {
               >
                 {user.full_name}
               </Typography>
-
-              <Chip label={user.genders} sx={{ textTransform: "capitalize" }} />
             </Box>
 
             <Box

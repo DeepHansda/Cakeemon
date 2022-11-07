@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,9 +11,9 @@ import Box from "@mui/material/Box";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { FiEye, FiEyeOff, FiUser } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiPlus, FiUser } from "react-icons/fi";
 import {
+  Chip,
   FormControl,
   FormLabel,
   IconButton,
@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import { ProjectContext } from "../../App";
 import Toast from "../Utils/Toast";
 import Loading from "../Utils/Loading";
+import Footer from "../Footer/Footer";
+import Navbar from "../Navbar/Navbar";
 
 function Copyright(props) {
   return (
@@ -36,8 +38,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://cakeemon.vercel.app">
+        Cakeemon
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -45,82 +47,104 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+
+
 
 export default function SignUp() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
+  const [first_name, setFirst_name] = useState("");
+  const [last_name, setLast_name] = useState("");
+  const [genders, setGenders] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile_number, setMobile_number] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [previewImg,setPreviewImg] = useState("");
+  const [img,setImg] = useState("");
 
-  const [first_name,setFirst_name] = useState('')
-  const [last_name,setLast_name] = useState('')
-  const [genders,setGenders] = useState('')
-  const [email,setEmail] = useState('')
-  const [mobile_number,setMobile_number] = useState('')
-  const [password,setPassword] = useState('')
-  const [confirmPassword,setConfirmPassword] = useState('')
 
-  console.log(genders)
 
-  const {dispatch,navigator,setOpenAlert,location} = useContext(ProjectContext)
-  const {loading ,isAuthenticated, user ,error} = useSelector((state)=>state.user)
+  const { dispatch, navigator, setOpenAlert, location } =
+    useContext(ProjectContext);
+  const { loading, isAuthenticated, user, error } = useSelector(
+    (state) => state.user
+  );
 
-  
-  console.log(location.state?.previousPath)
-  console.log(user);
-
+  console.log(location.state?.previousPath);
 
   const handleSignUp = (event) => {
     event.preventDefault();
     const data = new FormData();
 
-    data.set('first_name',first_name)
-    data.set('last_name',last_name)
-    data.set('genders',genders)
-    data.set('email',email)
-    data.set('mobile_number',mobile_number)
-    data.set('password',password)
-    const formData = {
-      first_name,
-      last_name,
-       email,
-       mobile_number,
-       password,
-     }
+    data.set("img",img)
+    data.set("first_name", first_name);
+    data.set("last_name", last_name);
+    data.set("genders", genders);
+    data.set("email", email);
+    data.set("mobile_number", mobile_number);
+    data.set("password", password);
 
-     dispatch(signUp(data))
+
+    if(password===confirmPassword){
+      dispatch(signUp(data));
+    }
+    else{
+      setOpenAlert({ open: true, message: "Password Does not Matched.", success: false });
+    }
   };
 
   const handleSignIn = (event) => {
     event.preventDefault();
-    const formData ={
-      email:email,
+    const formData = {
+      email: email,
       password: password,
-    }
-    dispatch(signin(formData))
-    
+    };
+    dispatch(signin(formData));
   };
 
   useEffect(() => {
-    if(error){
-      setOpenAlert({open:true,message:error.message,success:false})
+    if (error) {
+      setOpenAlert({ open: true, message: error.message, success: false });
       dispatch(clearErrors());
-
     }
 
-    if(isAuthenticated){
-      
-      navigator('/profile')
+    if (isAuthenticated) {
+      navigator("/profile");
     }
+  }, [dispatch, error, isAuthenticated]);
 
-  },[dispatch,error,isAuthenticated])
+
+  const handleImg = (e) => {
+    e.preventDefault();
+    
+    const img = e.target.files[0];
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      if(fileReader.readyState==2){
+        setPreviewImg(fileReader.result)
+        setImg(img)
+      }
+    }
+    fileReader.readAsDataURL(img)
+  }
+
+
+
+
+
+
 
   return (
-    <ThemeProvider theme={theme}>
+    <Fragment>
+      <Navbar />
       {loading && <Loading />}
-      <Toast/>
-      <Container component="main" maxWidth="xs">
-        <Paper elevation={4} sx={{ padding: "20px" }}>
+      <Toast />
+      <Container component="main" maxWidth="xs" sx={{ mt:6,mb:6 }}>
+        <Paper elevation={4} sx={{ padding: "20px"}}>
           <CssBaseline />
           <Box
             sx={{
@@ -139,10 +163,26 @@ export default function SignUp() {
             <Box
               component="form"
               noValidate
-              onSubmit={isSignUp ? handleSignUp : handleSignIn }
+              onSubmit={isSignUp ? handleSignUp : handleSignIn}
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
+                {isSignUp && (
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Avatar sx={{ width: 70, height: 70 }} src={previewImg} alt="preview"/>
+                    <input type="file" accept="image/*" onChange={handleImg} />
+                  </Grid>
+                )}
+
                 {isSignUp && (
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -155,7 +195,7 @@ export default function SignUp() {
                       autoFocus
                       size="medium"
                       value={first_name}
-                      onChange={(e) =>setFirst_name(e.target.value)}
+                      onChange={(e) => setFirst_name(e.target.value)}
                     />
                   </Grid>
                 )}
@@ -170,38 +210,36 @@ export default function SignUp() {
                       autoComplete="family-name"
                       size="medium"
                       value={last_name}
-                      onChange={(e) =>setLast_name(e.target.value)}
+                      onChange={(e) => setLast_name(e.target.value)}
                     />
                   </Grid>
                 )}
 
-
-{isSignUp && (
+                {isSignUp && (
                   <Grid item xs={12} sm={6}>
                     <FormControl
-                component="fieldset"
-                name="genders"
-                variant="standard"
-                value={genders}
-                onChange={(e)=>setGenders(e.target.value)}
-              >
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup row>
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio size="small" />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio size="small" />}
-                    label="Female"
-                  />
-                </RadioGroup>
-              </FormControl>
+                      component="fieldset"
+                      name="genders"
+                      variant="standard"
+                      value={genders}
+                      onChange={(e) => setGenders(e.target.value)}
+                    >
+                      <FormLabel component="legend">Gender</FormLabel>
+                      <RadioGroup row>
+                        <FormControlLabel
+                          value="male"
+                          control={<Radio size="small" />}
+                          label="Male"
+                        />
+                        <FormControlLabel
+                          value="female"
+                          control={<Radio size="small" />}
+                          label="Female"
+                        />
+                      </RadioGroup>
+                    </FormControl>
                   </Grid>
                 )}
-
 
                 <Grid item xs={12}>
                   <TextField
@@ -213,7 +251,7 @@ export default function SignUp() {
                     autoComplete="email"
                     size="medium"
                     value={email}
-                      onChange={(e) =>setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
 
@@ -229,7 +267,7 @@ export default function SignUp() {
                       type="number"
                       size="medium"
                       value={mobile_number}
-                      onChange={(e) =>setMobile_number(e.target.value)}
+                      onChange={(e) => setMobile_number(e.target.value)}
                     />
                   </Grid>
                 )}
@@ -245,9 +283,8 @@ export default function SignUp() {
                     autoComplete="new-password"
                     size="medium"
                     value={password}
-                      onChange={(e) =>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  
                 </Grid>
 
                 {isSignUp && (
@@ -262,37 +299,29 @@ export default function SignUp() {
                       autoComplete="new-password"
                       size="medium"
                       value={confirmPassword}
-                      onChange={(e) =>setConfirmPassword(e.target.value)}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </Grid>
                 )}
                 <Container sx={{ textAlign: "right" }}>
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                      size="small"
-                      
-                    >
-                      {showPassword ? <FiEye /> : <FiEyeOff />}
-                    </IconButton>
-                  </Container>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="Remember Me"
-                  />
-                </Grid>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                    size="small"
+                  >
+                    {showPassword ? <FiEye /> : <FiEyeOff />}
+                  </IconButton>
+                </Container>
               </Grid>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                color="primary"
               >
-                Sign Up
+                {isSignUp ? "Sign Up" : "Sign In"}
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
@@ -312,6 +341,7 @@ export default function SignUp() {
           <Copyright sx={{ mt: 5 }} />
         </Paper>
       </Container>
-    </ThemeProvider>
+      <Footer/>
+    </Fragment>
   );
 }

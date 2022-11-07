@@ -10,7 +10,7 @@
   padding: 14px;
 }
 .navbar-container .navbar-upper .nav-user-options {
-  width: 120px;
+  width: 160px;
   display: flex;
   justify-content: space-around
 }
@@ -75,7 +75,7 @@
 }
 
 .navbar-bottom-search .navbar-bottom-search-container input {
-  padding: 4px 10px;
+  padding: 6px 10px;
   outline: none;
   font-family: "Poppins", sans-serif;
   width: 100%;
@@ -87,7 +87,7 @@
   color: var(--main-color);
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 21px;
   cursor: pointer;
   
 }

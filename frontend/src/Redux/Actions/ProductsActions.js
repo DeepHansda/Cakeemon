@@ -17,13 +17,13 @@ import {
 } from '../Common/Constants'
 import {ProductsServices} from '../Common/ProductsServices'
 
-export const getProductsClient = (keyword , currentPage, category ,ratings ) => async (dispatch) => {
+export const getProductsClient = (keyword , currentPage, category ,occasion, ratings ) => async (dispatch) => {
     try {
         dispatch({
             type: ALL_PRODUCT_REQUEST
         })
 
-        const res = await ProductsServices.getProductsClient(keyword , currentPage, category ,ratings )
+        const res = await ProductsServices.getProductsClient(keyword , currentPage, category ,occasion,ratings )
 
         dispatch({
             type: ALL_PRODUCT_SUCCESS,

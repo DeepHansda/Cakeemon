@@ -6,9 +6,9 @@ export default function ProductsContainer({products}) {
   return (
     <div className="products-container">
         {
-            products.map(product =>{
+            products.map((product,index) =>{
                 return (
-                    <Product product={product}/>
+                    <Product product={product} key={index}/>
                 )
             })
         }

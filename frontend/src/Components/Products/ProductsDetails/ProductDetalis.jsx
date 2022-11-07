@@ -32,6 +32,7 @@ import Loading from "../../Utils/Loading";
 import Toast from "../../Utils/Toast";
 import ReviewCard from "./ReviewCard";
 import { useRef } from "react";
+import MetaData from "../../Utils/MetaData";
 
 export default function ProductDetalis() {
   const { offset, width, dispatch, setOpenAlert } = useContext(ProjectContext);
@@ -158,6 +159,8 @@ export default function ProductDetalis() {
   };
   return (
     <Fragment>
+      <MetaData title={product.name}/>
+
       <Navbar />
       {loading && <Loading />}
       <Toast />

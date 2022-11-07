@@ -1,9 +1,11 @@
 import { Chip, Container, Paper } from '@mui/material'
-import React from 'react'
+import React, { useContext } from 'react'
 import Slider from 'react-slick'
+import { ProjectContext } from '../../App';
 import TopProduct from '../Products/TopProduct'
 
-function Showcase({title,data}) {
+function Showcase({title,data,show}) {
+  const {navigator} = useContext(ProjectContext);
     const settings = {
         infinite: true,
         className: "center",
@@ -66,6 +68,10 @@ function Showcase({title,data}) {
           },
         ],
       };
+
+      const navi = () =>{
+        navigator(`/allProducts?category=${show}`)
+      }
   return (
     <Paper variant="outlined">
     <Container maxWidth="xl">
@@ -92,7 +98,7 @@ function Showcase({title,data}) {
         </div>
 
         <div className="showcase-chip">
-          <Chip variant="filled" label="Show More." color="primary" />
+          <Chip variant="filled" label="Show More." color="primary" onClick={()=>navi()}/>
         </div>
       </div>
     </Container>

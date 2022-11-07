@@ -3,11 +3,14 @@ import React from "react";
 import { Fragment } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import MetaData from "../Utils/MetaData";
 import Query from "../Utils/Query";
 
 function ContactUs() {
   return (
     <Fragment>
+      <MetaData title="Contact"/>
+
       <Navbar />
       <Container sx={{ margin: "20px auto" }}>
         <Typography variant="h2" sx={{fontFamily: "'Poppins',sans-serif",fontWeight: "bold",}}>

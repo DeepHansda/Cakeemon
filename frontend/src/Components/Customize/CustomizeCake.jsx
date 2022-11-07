@@ -23,8 +23,9 @@ import { ProjectContext } from "../../App";
 import { createRepair } from "../../Redux/Actions/RepairActions";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import MetaData from "../Utils/MetaData";
 
-function BookRepair() {
+function CustomizeCake() {
   // const [first_name, setFirst_name] = useState("");
   // const [last_name, setLast_name] = useState("");
   // const [email, setEmail] = useState("");
@@ -51,7 +52,6 @@ function BookRepair() {
     repair_type: "",
   });
 
-  console.log(repair);
   const {
     first_name,
     last_name,
@@ -99,6 +99,7 @@ function BookRepair() {
   };
   return (
     <Fragment>
+      <MetaData title="Customize Your Cake"/>
       <Navbar />
       <Container maxWidth="sm">
         <Typography component="h1" variant="h2">
@@ -289,4 +290,4 @@ function BookRepair() {
   );
 }
 
-export default BookRepair;
+export default CustomizeCake;

@@ -17,6 +17,11 @@
 }
 body{
   position: relative;
+  overflow-x: hidden;
+}
+.App{
+  overflow-x: hidden;
+
 }
 
 /* font-family: 'Poppins', sans-serif;

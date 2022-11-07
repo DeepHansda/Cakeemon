@@ -2,40 +2,72 @@ import React, { useContext } from "react";
 import Slider from "react-slick";
 import "./categories.css";
 import { ProjectContext } from "../../../App";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 export default function Categories({ items, name }) {
+
+  function NextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "black",borderRadius: "100%",margin:'0 5px'}}
+        onClick={onClick}
+      />
+    );
+  }
+  
+  function PrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "black" ,borderRadius: "100%",margin:'0 5px'}}
+        onClick={onClick}
+      >
+        <FiArrowRight/>
+      </div>
+    );
+  }
+
+
   const settings = {
     dots: false,
-    arrows: true,
     // autoplay: true,
-    speed: 4000,
     infinite: true,
-    slidesToScroll: 6,
-    autoplaySpeed: 2000,
     swipeToSlide: true,
-    cssEase: "ease",
+    arrow: true,
+     nextArrow: <NextArrow />,
+      prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 2000,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 8,
+          slidesToScroll: 2,
         },
       },
       {
         breakpoint: 1200,
         settings: {
           slidesToShow: 5,
+          slidesToScroll: 2,
+
         },
       },
       {
         breakpoint: 810,
         settings: {
           slidesToShow: 5,
+          slidesToScroll: 5,
+
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 4,
+          slidesToScroll: 4,
+
         },
       },
     ],
