@@ -1,17 +1,13 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials=true
 // https://cakeemon-backend.vercel.app/
 // http://localhost:3400/api
 export const API = axios.create({
   baseURL: "https://cakeemon-backend.vercel.app/api",
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": [
-      "https://cakeemon.vercel.app",
-      "http://localhost:3400",
-    ],
-    "Access-Control-Allow-Headers":
-      "Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept Accept-Encoding",
-  },
+    "Access-Control-Allow-Origin": ["https://cakeemon.vercel.app","http://localhost:3400"],
+    'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept Accept-Encoding',
+    },
 });
