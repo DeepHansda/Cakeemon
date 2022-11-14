@@ -8,6 +8,7 @@ import {
   FormLabel,
   InputLabel,
   Paper,
+  TextField,
   Typography,
 } from "@mui/material";
 import { ProjectContext } from "../../../App";
@@ -27,7 +28,7 @@ function Banners() {
   const { createLoading } = useSelector((state) => state.newBanners);
   const { deleteLoading } = useSelector((state) => state.deleteBanner);
 
-
+  const [link, setLink] = useState("");
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -37,7 +38,6 @@ function Banners() {
 
   const imageHandler = (e) => {
     const inputImages = Array.from(e.target.files);
-    
 
     inputImages.forEach((image) => {
       const reader = new FileReader();
@@ -53,6 +53,7 @@ function Banners() {
 
   const submitHandler = () => {
     const form = new FormData();
+    form.set("link", link);
     images.forEach((image) => {
       form.append("img", image);
     });
@@ -84,15 +85,15 @@ function Banners() {
   return (
     <Box>
       <Toast />
-      {createLoading || deleteLoading ? (<Loading/>):''}
+      {createLoading || deleteLoading ? <Loading /> : ""}
 
       <Typography
-        sx={{ fontFamily: "'Poppins',sans-serif", fontWeight: "bold" ,p:2}}
+        sx={{ fontFamily: "'Poppins',sans-serif", fontWeight: "bold", p: 2 }}
         variant="h5"
       >
         Add Banners
       </Typography>
-      <Box sx={{ display: "flex",p:5 }}>
+      <Box sx={{ display: "flex", p: 5 }}>
         <Paper variant="outlined" sx={{ p: 2, width: "fit-content" }}>
           <FormControl>
             <FormLabel>Select Images</FormLabel>
@@ -103,6 +104,15 @@ function Banners() {
               onChange={imageHandler}
             />
           </FormControl>
+
+          <TextField
+            margin="normal"
+            label="Enter The Link"
+            type="text"
+            size="small"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+          />
 
           <Box component="div" sx={{ mt: 2 }}>
             <Button variant="outlined" onClick={() => submitHandler()}>

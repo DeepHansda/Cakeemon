@@ -117,7 +117,7 @@ function TopProduct({ product }) {
             <h3>{product.name}</h3>
           </div>
           <div className="top-product-price">
-            <p>${product.price}</p>
+            <p>₹{product.price}</p>
           </div>
 
           <Star ratings={product.ratings} />

@@ -125,6 +125,7 @@
   }
   .navbar-container .navbar-upper .logo img {
     max-width: 180px;
+    cursor: pointer;
   }
   .navbar-lower .navbar-middle-container {
     display: block;

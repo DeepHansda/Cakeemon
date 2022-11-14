@@ -20,6 +20,7 @@ module.exports = {
       imgLinks.push({
         public_id: result.public_id,
         img: result.url,
+        link:req.body.link
       });
     }
 

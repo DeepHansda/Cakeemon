@@ -105,7 +105,7 @@ export default function Footer() {
       </div>
 
       <div class="row copyright">
-        <p>Copyright &copy; 2021 Mr.FixIt</p>
+        <p>Copyright &copy; 2021 Cakeemon</p>
       </div>
       </Paper>
     </footer>

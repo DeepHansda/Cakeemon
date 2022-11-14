@@ -4,31 +4,41 @@ import "./categories.css";
 import { ProjectContext } from "../../../App";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 export default function Categories({ items, name }) {
-
   function NextArrow(props) {
     const { className, style, onClick } = props;
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "black",borderRadius: "100%",margin:'0 5px'}}
+        style={{
+          ...style,
+          display: "block",
+          background: "black",
+          borderRadius: "100%",
+          margin: "0 5px",
+        }}
         onClick={onClick}
       />
     );
   }
-  
+
   function PrevArrow(props) {
     const { className, style, onClick } = props;
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "black" ,borderRadius: "100%",margin:'0 5px'}}
+        style={{
+          ...style,
+          display: "block",
+          background: "black",
+          borderRadius: "100%",
+          margin: "0 5px",
+        }}
         onClick={onClick}
       >
-        <FiArrowRight/>
+        <FiArrowRight />
       </div>
     );
   }
-
 
   const settings = {
     dots: false,
@@ -36,8 +46,8 @@ export default function Categories({ items, name }) {
     infinite: true,
     swipeToSlide: true,
     arrow: true,
-     nextArrow: <NextArrow />,
-      prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 2000,
@@ -51,7 +61,6 @@ export default function Categories({ items, name }) {
         settings: {
           slidesToShow: 5,
           slidesToScroll: 2,
-
         },
       },
       {
@@ -59,7 +68,6 @@ export default function Categories({ items, name }) {
         settings: {
           slidesToShow: 5,
           slidesToScroll: 5,
-
         },
       },
       {
@@ -67,7 +75,6 @@ export default function Categories({ items, name }) {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-
         },
       },
     ],

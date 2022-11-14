@@ -178,7 +178,8 @@
     margin: 20px 0;
 }
 .showcase-slider{
-  margin:20px 0
+  margin:20px 0;
+  padding:0 10px
 }
 .popular-category-items{
   display: flex;

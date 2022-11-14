@@ -70,7 +70,7 @@ export default function Navbar() {
         <nav className="navbar-container">
           <div className="navbar-upper">
             <div className="logo">
-              <img src={logo} alt="logo" />
+              <img src={logo} alt="logo" onClick={()=>{navigator('/')}}/>
             </div>
 
             <div className="nav-user-options">

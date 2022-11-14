@@ -157,9 +157,10 @@ export default function ProductDetalis() {
   const imageGallery = (img) => {
     product_details_slider.current.style.backgroundImage = `url(${img})`;
   };
+  
   return (
     <Fragment>
-      <MetaData title={product.name}/>
+      {/* <MetaData title={product.name}/> */}
 
       <Navbar />
       {loading && <Loading />}
@@ -184,7 +185,7 @@ export default function ProductDetalis() {
           >
             <div className="product-images">
               {product.images &&
-                product.images.map((item, index) => {
+                product.images.slice(0,4).map((item, index) => {
                   return (
                     <img
                       key={index}
