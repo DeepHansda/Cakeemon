@@ -2,15 +2,22 @@ import { API } from "../Common/API";
 
 // API.defaults.withCredentials=true
 const headersOptions = {
-  "Access-Control-Allow-Origin":'https://tapajyoti-ecommerce.vercel.app',
-  'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
-}
+  "Access-Control-Allow-Origin": "https://cakeemon.vercel.app",
+  "Access-Control-Allow-Headers":
+    "Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept",
+};
 export const UserServices = {
   signIn: (formData) => {
-    return API.post("/login", formData, { withCredentials: true ,headers:headersOptions});
+    return API.post("/login", formData, {
+      withCredentials: true,
+      headers: headersOptions,
+    });
   },
   signUp: (formData) => {
-    return API.post("/signUp", formData,  { withCredentials: true,headers:headersOptions });
+    return API.post("/signUp", formData, {
+      withCredentials: true,
+      headers: headersOptions,
+    });
   },
   getUser: (id) => {
     return API.get(`/getUser/${id}`);
