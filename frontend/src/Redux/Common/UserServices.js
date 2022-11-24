@@ -8,16 +8,10 @@ const headersOptions = {
 };
 export const UserServices = {
   signIn: (formData) => {
-    return API.post("/login", formData, {
-      withCredentials: true,
-      // headers: headersOptions,
-    });
+    return API.post("/login", formData,);
   },
   signUp: (formData) => {
-    return API.post("/signUp", formData, {
-      withCredentials: true,
-      headers: headersOptions,
-    });
+    return API.post("/signUp", formData, );
   },
   getUser: (id) => {
     return API.get(`/getUser/${id}`);

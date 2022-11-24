@@ -16,16 +16,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.raw());
 app.use(express.json());
-app.use(cookieParser());
 
 const corsOptions = {
-    origin:["http://localhost:3000","https://cakeemon.vercel.app"],
-    credentials: true,
-    'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
-    "Access-Control-Allow-Credentials": true,
-    // "Access-Control-Allow-Origin":'*'
-
-  }
+  origin:["http://localhost:3000","https://cakeemon.vercel.app"],
+  credentials: true,
+  'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
+  "Access-Control-Allow-Credentials": true,
+  // "Access-Control-Allow-Origin":'*'
+  
+}
+app.use(cookieParser());
 app.use(
   cors(corsOptions)
 );
