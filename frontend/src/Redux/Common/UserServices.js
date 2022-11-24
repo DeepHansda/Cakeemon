@@ -10,7 +10,7 @@ export const UserServices = {
   signIn: (formData) => {
     return API.post("/login", formData, {
       withCredentials: true,
-      headers: headersOptions,
+      // headers: headersOptions,
     });
   },
   signUp: (formData) => {
