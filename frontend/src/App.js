@@ -25,7 +25,7 @@ import BookRepair from "./Components/Customize/CustomizeCake";
 import ContactUs from "./Components/ContactUs/ContactUs";
 import AboutUs from "./Components/About/AboutUs";
 import Dashboard from "./ADMIN/Components/Dashboard/Dashboard";
-import {AdminOrders} from "./ADMIN/Components/Orders/AdminOrders";
+import { AdminOrders } from "./ADMIN/Components/Orders/AdminOrders";
 import AdminHome from "./ADMIN/Components/Home/AdminHome";
 import AdminOrderDetails from "./ADMIN/Components/Orders/AdminOrderDetails";
 import Customers from "./ADMIN/Components/Customers/Customers";
@@ -35,48 +35,29 @@ import { getCategories } from "./Redux/Actions/CategoriesAction";
 import CustomizeCake from "./Components/Customize/CustomizeCake";
 export const ProjectContext = createContext();
 
-
-
-
-
-
 function App() {
   const [offset, setOffset] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
   const [openAlert, setOpenAlert] = useState({
-    open:false,
-    message:"success",
-    success:true,
+    open: false,
+    message: "success",
+    success: true,
   });
 
-  const [loading, setloading] = useState(undefined);
   const [completed, setcompleted] = useState(undefined);
-
 
   // redirect or navigation handling
   const navigate = useNavigate();
   const navigator = (link) => {
     navigate(link);
   };
-  const location = useLocation()
+  const location = useLocation();
 
   // global useDispatch for entire project
   const dispatch = useDispatch();
 
   useEffect(() => {
-
-
-    setTimeout(() => {
-      fetch("https://cakeemon.vercel.app/")
-        .then((response) => {console.log(response) 
-        setloading(true);})
-        .then((json) => {
-          console.log(json);
-          
-        });
-    }, 4000);
-  
-      dispatch(getCategories());
+    dispatch(getCategories());
     // handling screen width
     function handleScroll() {
       setOffset(window.pageYOffset);
@@ -102,10 +83,10 @@ function App() {
     width: width,
     offset: offset,
     openAlert: openAlert,
-    setOpenAlert:setOpenAlert,
+    setOpenAlert: setOpenAlert,
     navigator: navigator,
     dispatch: dispatch,
-    location: location
+    location: location,
   };
 
   const defaultOptions1 = {
@@ -121,55 +102,49 @@ function App() {
   };
   return (
     <>
-    { !loading ? (
-      <Lottie loop = {true}
-      autoplay = {true}
-      animationData = {groovyWalkAnimation}
-      style={style} />
-    ):(
-
+      (
       <ProjectContext.Provider value={states}>
-      <div className="App">
-        <div className="routes">
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/productDetails/:id" element={<ProductDetalis />} />
-          <Route path="/allProducts" element={<MainContainer />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/custom" element={<CustomizeCake />} />
-          <Route path="/contactUS" element={<ContactUs />} />
-          <Route path="/aboutUs" element={<AboutUs />} />
+        <div className="App">
+          <div className="routes">
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/productDetails/:id" element={<ProductDetalis />} />
+              <Route path="/allProducts" element={<MainContainer />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/custom" element={<CustomizeCake />} />
+              <Route path="/contactUS" element={<ContactUs />} />
+              <Route path="/aboutUs" element={<AboutUs />} />
 
-          <Route path="/auth" element={<Auth />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/reviewOrder" element={<ReviewOrder />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/myOrders" element={<MyOrders />} />
-            <Route path="/confirmOrder" element={<ConfirmOrder />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/shipping" element={<Shipping />} />
+                <Route path="/reviewOrder" element={<ReviewOrder />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/myOrders" element={<MyOrders />} />
+                <Route path="/confirmOrder" element={<ConfirmOrder />} />
+              </Route>
 
-          </Route>
-
-          <Route element={<ProtectedRoute isAdmin={true}/>}>
-          <Route path="/admin" element={<Dashboard />}>
-            <Route path="/admin/main" index element={< AdminHome/>}/>
-            <Route path="/admin/orders" element={<AdminOrders />}/>
-            <Route path="/admin/orderDetails/:id" element={<AdminOrderDetails/>}/>
-            <Route path="/admin/customers" element={<Customers/>}/>
-            <Route path="/admin/products" element={<AdminProducts/>}/>
-            <Route path="/admin/extras" element={<ExtraControll/>}/>
-
-          </Route>
-
-          </Route>
-        </Routes>
+              <Route element={<ProtectedRoute isAdmin={true} />}>
+                <Route path="/admin" element={<Dashboard />}>
+                  <Route path="/admin/main" index element={<AdminHome />} />
+                  <Route path="/admin/orders" element={<AdminOrders />} />
+                  <Route
+                    path="/admin/orderDetails/:id"
+                    element={<AdminOrderDetails />}
+                  />
+                  <Route path="/admin/customers" element={<Customers />} />
+                  <Route path="/admin/products" element={<AdminProducts />} />
+                  <Route path="/admin/extras" element={<ExtraControll />} />
+                </Route>
+              </Route>
+            </Routes>
+          </div>
         </div>
-      </div>
-    </ProjectContext.Provider>
-    )}
+      </ProjectContext.Provider>
+      )
     </>
   );
 }
