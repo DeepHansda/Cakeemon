@@ -102,7 +102,7 @@ function App() {
   };
   return (
     <>
-      (
+      
       <ProjectContext.Provider value={states}>
         <div className="App">
           <div className="routes">
@@ -144,7 +144,7 @@ function App() {
           </div>
         </div>
       </ProjectContext.Provider>
-      )
+      
     </>
   );
 }
