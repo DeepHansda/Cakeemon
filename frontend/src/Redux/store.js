@@ -1,29 +1,49 @@
-import thunk from 'redux-thunk'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import {applyMiddleware} from 'redux'
-import { legacy_createStore as createStore } from 'redux'
-import { RootReducer } from './Reducers/RootReducer'
-const middleware = [thunk]
-const initialState = {
-   wishList:{
-      wishItems:localStorage.getItem('wishItems')?
-      JSON.parse(localStorage.getItem('wishItems')):[]
-   },
+import { configureStore } from "@reduxjs/toolkit";
 
-   cart: {
-      cartItems:localStorage.getItem('cartItems')?
-      JSON.parse(localStorage.getItem('cartItems')):[],
+import { bannersApi } from "./slices/bannersApiSlice";
+import { categoriesApiSlice } from "./slices/categoriesApiSlice";
+import { cartReducers } from "./slices/cartSlice";
+import { wishListReducer } from "./slices/wishListSlice";
+import { productsApiSlice } from "./slices/productsApiSlice";
 
-      shippingInfo:localStorage.getItem('shippingInfo')?
-      JSON.parse(localStorage.getItem('shippingInfo')):{}
-   }
+const persistedWishItems = localStorage.getItem("wishItems")
+  ? JSON.parse(localStorage.getItem("wishItems"))
+  : [];
 
-   
-}
-const store = createStore(
-   RootReducer,
-   initialState,
-   composeWithDevTools(applyMiddleware(...middleware))
-)
+const persistedCartItems = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
 
-export default store
+const persistedShippingInfo = localStorage.getItem("shippingInfo")
+  ? JSON.parse(localStorage.getItem("shippingInfo"))
+  : {};
+
+// Preloaded state for the store
+const preloadedState = {
+  wishList: {
+    wishItems: persistedWishItems,
+  },
+  cart: {
+    cartItems: persistedCartItems,
+    shippingInfo: persistedShippingInfo,
+  },
+};
+
+// Automatically adds the thunk middleware and the Redux DevTools extension
+const store = configureStore({
+  // Automatically calls `combineReducers`
+  reducer: {
+    [bannersApi.reducerPath]: bannersApi.reducer,
+    [categoriesApiSlice.reducerPath]: categoriesApiSlice.reducer,
+    [productsApiSlice.reducerPath]: productsApiSlice.reducer,
+    cart: cartReducers,
+    wishList: wishListReducer,
+  },
+  preloadedState,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(bannersApi.middleware)
+      .concat(categoriesApiSlice.middleware).concat(productsApiSlice.middleware),
+});
+
+export default store;

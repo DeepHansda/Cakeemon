@@ -4,6 +4,7 @@ import "./categories.css";
 import { ProjectContext } from "../../../App";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 export default function Categories({ items, name }) {
+  console.log(items)
   function NextArrow(props) {
     const { className, style, onClick } = props;
     return (

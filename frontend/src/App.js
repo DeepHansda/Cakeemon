@@ -2,28 +2,12 @@ import { createContext, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import groovyWalkAnimation from "./10181-groovy-walk-cycle.json";
 import "./App.css";
-import Main from "./Components/Main/Main";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import ProductDetalis from "./Components/Products/ProductsDetails/ProductDetalis";
-import MainContainer from "./Components/Products/MainContainer/MainContainer";
+
 import { useDispatch, useSelector } from "react-redux";
-import Wishlist from "./Components/Wishlist/Wishlist";
-import Cart from "./Components/Cart/Cart";
-import Shipping from "./Components/Orders/Shipping";
-import ReviewOrder from "./Components/Orders/ReviewOrder";
-import Payment from "./Components/Orders/Payment";
-import Auth from "./Components/authentication/Auth";
-import { loadUser } from "./Redux/Actions/UserActions";
-import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import Profile from "./Components/authentication/Profile";
-import Checkout from "./Components/Orders/Checkout";
-import MyOrders from "./Components/Orders/MyOrders";
-import ConfirmOrder from "./Components/Orders/ConfirmOrder";
-import BookRepair from "./Components/Customize/CustomizeCake";
-import ContactUs from "./Components/ContactUs/ContactUs";
-import AboutUs from "./Components/About/AboutUs";
+
 import Dashboard from "./ADMIN/Components/Dashboard/Dashboard";
 import { AdminOrders } from "./ADMIN/Components/Orders/AdminOrders";
 import AdminHome from "./ADMIN/Components/Home/AdminHome";
@@ -32,7 +16,29 @@ import Customers from "./ADMIN/Components/Customers/Customers";
 import AdminProducts from "./ADMIN/Components/Products/AdminProducts";
 import ExtraControll from "./ADMIN/Components/ExtraControl/ExtraControll";
 import { getCategories } from "./Redux/Actions/CategoriesAction";
-import CustomizeCake from "./Components/Customize/CustomizeCake";
+import ProductDetalis from "./Pages/Products/ProductsDetails/ProductDetalis";
+
+import Cart from "./Pages/Cart/Cart";
+import Wishlist from "./Pages/Wishlist/Wishlist";
+import ContactUs from "./Pages/ContactUs/ContactUs";
+
+import Auth from "./Pages/authentication/Auth";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import Profile from "./Pages/authentication/Profile";
+import Checkout from "./Pages/Orders/Checkout";
+import Shipping from "./Pages/Orders/Shipping";
+import ReviewOrder from "./Pages/Orders/ReviewOrder";
+import Payment from "./Pages/Orders/Payment";
+import MyOrders from "./Pages/Orders/MyOrders";
+import ConfirmOrder from "./Pages/Orders/ConfirmOrder";
+import AboutUs from "./Pages/About/AboutUs";
+import Home from "./Pages/Home/Home";
+import CustomizeCake from "./Components/Customize/CustomizeCake"
+import { loadUser } from "./Redux/Actions/UserActions";
+import ProductsContainer from "./Pages/Products/ProductsContainer/ProductsContainer";
+
+
+
 export const ProjectContext = createContext();
 
 function App() {
@@ -102,14 +108,13 @@ function App() {
   };
   return (
     <>
-      
       <ProjectContext.Provider value={states}>
         <div className="App">
           <div className="routes">
             <Routes>
-              <Route path="/" element={<Main />} />
+              <Route path="/" element={<Home />} />
               <Route path="/productDetails/:id" element={<ProductDetalis />} />
-              <Route path="/allProducts" element={<MainContainer />} />
+              <Route path="/allProducts" element={<ProductsContainer />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/custom" element={<CustomizeCake />} />
@@ -127,7 +132,7 @@ function App() {
                 <Route path="/confirmOrder" element={<ConfirmOrder />} />
               </Route>
 
-              <Route element={<ProtectedRoute isAdmin={true} />}>
+              {/* <Route element={<ProtectedRoute isAdmin={true} />}>
                 <Route path="/admin" element={<Dashboard />}>
                   <Route path="/admin/main" index element={<AdminHome />} />
                   <Route path="/admin/orders" element={<AdminOrders />} />
@@ -139,12 +144,11 @@ function App() {
                   <Route path="/admin/products" element={<AdminProducts />} />
                   <Route path="/admin/extras" element={<ExtraControll />} />
                 </Route>
-              </Route>
+              </Route> */}
             </Routes>
           </div>
         </div>
       </ProjectContext.Provider>
-      
     </>
   );
 }

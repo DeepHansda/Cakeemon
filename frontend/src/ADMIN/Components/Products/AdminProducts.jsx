@@ -1,7 +1,7 @@
 import {
     Box,
   } from "@mui/material";
-  import '../../../Components/Products/MainContainer/mainContainer.css'
+  import '../../../Pages/Products/products.style.css'
   import React, { useContext, useEffect, useState } from "react";
   import {  useSelector } from "react-redux";
   import { getProductsClient } from "../../../Redux/Actions/ProductsActions";

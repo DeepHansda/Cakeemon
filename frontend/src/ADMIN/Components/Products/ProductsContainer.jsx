@@ -1,6 +1,6 @@
 import React from 'react'
 import Product from './Product'
-import "../../../Components/Products/Products.css";
+import "../../../Pages/Products/products.style.css";
 
 
 export default function ProductsContainer({products}) {

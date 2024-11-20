@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-import "../../../Components/Products/Products.css";
+import "../../../Pages/Products/products.style.css";
 import { useNavigate } from "react-router-dom";
 import Star from "../../../Components/Utils/Star";
 import { ProjectContext } from "../../../App";

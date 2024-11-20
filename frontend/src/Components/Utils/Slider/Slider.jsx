@@ -6,6 +6,7 @@ import Toast from "../Toast";
 import { getBanners } from "../../../Redux/Actions/BannerActions";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useGetBannersQuery } from "../../../Redux/slices/bannersApiSlice";
 const MainSlider = () => {
   const { setOpenAlert ,dispatch , navigator} = useContext(ProjectContext);
 
@@ -28,12 +29,12 @@ const MainSlider = () => {
   useEffect(() => {
     dispatch(getBanners())
   }, []);
-  const {banners , loading} = useSelector((state)=>state.banners)
+  const {data:banners,isLoading} = useGetBannersQuery()
   return (
     <div className="main-autoSlide">
       <Toast />
       <Slider {...settings}>
-        {banners && banners.map((banner) => {
+        {banners && banners.banners.map((banner) => {
           return (
             <div className="slide-items">
               <img src={banner.img} alt={banner.public_id} onClick={()=>navigator(banner.link)}/>

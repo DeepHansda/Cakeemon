@@ -1,17 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
-import "./Navbar.css";
-import {
-  FiHeart,
-  FiShoppingCart,
-  FiUser,
-  FiBarChart,
-  FiCrosshair,
-  FiSearch,
-  FiMenu,
-  FiX,
-} from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
-import { ProjectContext } from "../../App";
 import {
   Badge,
   Box,
@@ -19,10 +5,24 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+import React, { useContext, useState } from "react";
+import {
+  FiHeart,
+  FiMenu,
+  FiSearch,
+  FiShoppingCart,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
 import { useSelector } from "react-redux";
-import SocialContactBar from "../Utils/ContactBar/ContactBar";
+import { Link, useNavigate } from "react-router-dom";
+import { ProjectContext } from "../../App";
 import logo from "../../assets/logo.png";
+import { useGetAllCategoriesQuery } from "../../Redux/slices/categoriesApiSlice";
 import Categories from "../Utils/Categories/Categories";
+import SocialContactBar from "../Utils/ContactBar/ContactBar";
+import "./Navbar.css";
+
 function NavContact() {
   return (
     <div className="nav-contact">
@@ -31,21 +31,32 @@ function NavContact() {
   );
 }
 
+
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "Customize Cake", path: "/custom" },
+  { name: "Products", path: "/allProducts" },
+  { name: "Contact", path: "/contactUS" },
+  { name: "About", path: "/aboutUs" },
+];
+
 export default function Navbar() {
   const { offset, width, navigator } = useContext(ProjectContext);
   const [openBar, setOpenBar] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishItems } = useSelector((state) => state.wishList);
-  const { categories, loading } = useSelector((state) => state.categories);
+  const { data: categories, isLoading } = useGetAllCategoriesQuery();
 
-  const data = [
+console.log(categories)
+
+  const userNavList = [
     {
       title: "wishlist",
       icon: FiHeart(),
       link: "/wishlist",
-      count: wishItems.length,
+      count: 0,
     },
-
+  
     {
       title: "cart",
       icon: FiShoppingCart(),
@@ -59,18 +70,22 @@ export default function Navbar() {
       // count:,
     },
   ];
+
+  
+
   return (
     <>
-      {loading && (
-        <Box sx={{ p: 1, textAlign: "center" }}>
-          <CircularProgress />
-        </Box>
-      )}
       <div className="navbar">
         <nav className="navbar-container">
           <div className="navbar-upper">
             <div className="logo">
-              <img src={logo} alt="logo" onClick={()=>{navigator('/')}}/>
+              <img
+                src={logo}
+                alt="logo"
+                onClick={() => {
+                  navigator("/");
+                }}
+              />
             </div>
 
             <div className="nav-user-options">
@@ -79,14 +94,14 @@ export default function Navbar() {
                   <SearchBar />
                 </div>
               )}
-              {data.map((item, index) => {
+              {userNavList.map((item, index) => {
                 return (
                   <li key={index}>
                     <Tooltip
                       title={item.title}
                       onClick={() => navigator(item.link)}
                     >
-                      <IconButton >
+                      <IconButton>
                         <Badge badgeContent={item.count} color="primary">
                           {item.icon}
                         </Badge>
@@ -114,31 +129,11 @@ export default function Navbar() {
               {width < 700 && <NavContact />}
 
               <ul className="navbar-middle-items">
-                <li className="navbar-middle-item">
-                  <Link to="/">
-                    <p>home</p>
-                  </Link>
-                </li>
-                <li className="navbar-middle-item">
-                  <Link to="/custom">
-                    <p>Customize Cake</p>
-                  </Link>
-                </li>
-                <li className="navbar-middle-item">
-                  <Link to="/allProducts">
-                    <p>products</p>
-                  </Link>
-                </li>
-                <li className="navbar-middle-item">
-                  <Link to="/contactUS">
-                    <p>Contact</p>
-                  </Link>
-                </li>
-                <li className="navbar-middle-item">
-                  <Link to="/aboutUs">
-                    <p>About</p>
-                  </Link>
-                </li>
+                {navItems.map((item, index) => (
+                  <li key={index} className="navbar-middle-item">
+                    <Link to={item.path}>{item.name}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -154,7 +149,13 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Categories name={"Categories"} items={categories} />
+          {isLoading ? (
+            <Box sx={{ p: 1, textAlign: "center" }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Categories items={categories.categories} name={"Categories"} />
+          )}
         </nav>
       </div>
     </>
@@ -167,11 +168,11 @@ export default function Navbar() {
     const navigator = () => {
       navigate(`/allProducts?keyword=${keyword}`);
     };
-    const enterKey = (e) =>{
-      if(e.keyCode === 13){
-        navigator()
+    const enterKey = (e) => {
+      if (e.keyCode === 13) {
+        navigator();
       }
-    }
+    };
     return (
       <div className="navbar-bottom-search">
         <div className="navbar-bottom-search-container">

@@ -1,26 +1,26 @@
-import {API} from './API'
-export const ProductsServices ={
-    getProductsClient:(keyword , currentPage, category,occasion ,ratings )=>{
-        return API.get(`/getProducts/?keyword=${keyword}&category=${category}&page=${currentPage}&occasion=${occasion}&ratings=${ratings}`)
-    },
+import { API } from "./API";
+export const ProductsServices = {
+  getProductsClient: (keyword, currentPage, category, occasion, ratings) => {
+    return API.get(
+      `/getProducts/?keyword=${keyword}&category=${category}&page=${currentPage}&occasion=${occasion}&ratings=${ratings}`
+    );
+  },
 
-    createProduct:(data)=>{
-        return API.post('/createProduct', data)
-    },
-    getAllProducts:()=>{
-        return API.get('/getAllProducts')
-    },
+  createProduct: (data) => {
+    return API.post("/createProduct", data);
+  },
+  getAllProducts: () => {
+    return API.get("/getAllProducts");
+  },
 
-    getProductDetails:(id)=>{
-        return API.get(`/getProduct/${id}`)
-    },
+  getProductDetails: (id) => {
+    return API.get(`/getProduct/${id}`);
+  },
 
-    deleteProduct:(id)=>{
-        return API.delete(`/deleteProduct/${id}`)
-    },
-    createReviews:(reviewData)=>{
-        return API.post('/createReview',reviewData)
-    }
-
-
-}
+  deleteProduct: (id) => {
+    return API.delete(`/deleteProduct/${id}`);
+  },
+  createReviews: (reviewData) => {
+    return API.post("/createReview", reviewData);
+  },
+};
