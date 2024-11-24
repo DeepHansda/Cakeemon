@@ -1,6 +1,5 @@
 .product-information {
   width: 100%;
-  margin:20px
 }
 .product-information .product-details-main-section {
   width: 100%;
@@ -232,7 +231,7 @@
     width: fit-content;
     display: block;
   }
-  .product-information .product-details-main-section  {
+  .product-information .product-details-main-section {
     /* margin-right:50px */
     flex-direction: row;
   }
