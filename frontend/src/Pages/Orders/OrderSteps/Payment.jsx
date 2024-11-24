@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
 import {
-  AppBar,
   Button,
   Container,
   FormControl,
@@ -13,22 +11,25 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Upi from "../../assets/icons/upi-icon.svg";
-import bank from "../../assets/icons/wallet-to-bank-icon.svg";
-import card from "../../assets/icons/card-return-icon.svg";
-import wallet from "../../assets/icons/wallet-money-icon.svg";
-import { Fragment } from "react";
+import card from "../../../assets/icons/card-return-icon.svg";
+import Upi from "../../../assets/icons/upi-icon.svg";
+import wallet from "../../../assets/icons/wallet-money-icon.svg";
+import bank from "../../../assets/icons/wallet-to-bank-icon.svg";
 
-import { ProjectContext } from "../../App";
-import { paymentProcess } from "../../Redux/Actions/PaymentActions";
-import { createOrders } from "../../Redux/Actions/OrderActions";
-import { paymentVerify } from "../../Redux/Actions/PaymentActions";
-import MetaData from "../../Components/Utils/MetaData";
-import Toast from "../../Components/Utils/Toast";
-import Loading from "../../Components/Utils/Loading";
-import OrderStepper from "../../Components/Utils/OrderStepper";
+import { ProjectContext } from "../../../App";
 
+import Loading from "../../../Components/Utils/Loading";
+import MetaData from "../../../Components/Utils/MetaData";
+import OrderStepper from "../../../Components/Utils/OrderStepper";
+import Toast from "../../../Components/Utils/Toast";
+import { createOrder } from "../../../Redux/slices/ordersSlice";
+import {
+  paymentProcess,
+  paymentVerify,
+} from "../../../Redux/slices/paymentSlice";
+import MainLayout from "../../../Layouts/MainLayout";
 
 const methods = [
   { name: "UPI", type: "upi", logo: Upi },
@@ -37,19 +38,18 @@ const methods = [
   { name: "Net Bankings", type: "netBankings", logo: bank },
 ];
 
-
 function Payment() {
   const paymentPrices = JSON.parse(sessionStorage.getItem("orderInfo"));
   const [paymentMethod, setPaymentMethod] = useState("upi");
-  console.log(paymentMethod);
   const { user } = useSelector((state) => state.user);
+
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
+
   const { payment, error } = useSelector((state) => state.payment);
-  const { loading } = useSelector((state) => state.order);
-  console.log(user, shippingInfo, cartItems, payment, error, paymentPrices);
+
+  const { order, loading } = useSelector((state) => state.orders);
+
   const { dispatch, navigator, setOpenAlert } = useContext(ProjectContext);
-
-
 
   useEffect(() => {
     if (error) {
@@ -62,30 +62,25 @@ function Payment() {
     }
   }, [error]);
 
-
-
-
   const formatDate = () => {
     const result = new Date(Date.now());
     result.setDate(result.getDate() + 7);
     return result;
   };
 
-
-
-// 3rd this function will be called from pay() function , this function will handle payment verification and after payment varified ,the order will be placed.
+  // 3rd this function will be called from pay() function , this function will handle payment verification and after payment varified ,the order will be placed.
   const placeOrder = (paymentInfo) => {
     dispatch(paymentVerify(paymentInfo))
-      .then((res) => {
-        setOpenAlert({ open: true, message: res.message, success: true });
+      .then(({ payload }) => {
+        setOpenAlert({ open: true, message: payload.message, success: true });
 
         const orderData = {
           shippingInfo,
           orderedItems: cartItems,
           createdBy: user._id,
           paymentInfo: {
-            receipt: res.razorpay_order_id,
-            payment_id: res.razorpay_payment_id,
+            receipt: payload.razorpay_order_id,
+            payment_id: payload.razorpay_payment_id,
             status: "Paid",
             paidAt: Date.now(),
           },
@@ -94,15 +89,15 @@ function Payment() {
           deliveryDate: formatDate(),
         };
 
-        dispatch(createOrders(orderData))
-          .then((res) => {
-            if (res.success == 1) {
+        dispatch(createOrder(orderData))
+          .then(({ payload }) => {
+            if (payload.success == 1) {
               setOpenAlert({
                 open: true,
                 message: "order placed",
                 success: true,
               });
-              sessionStorage.setItem("order", JSON.stringify(res.order));
+              sessionStorage.setItem("order", JSON.stringify(payload.order));
               navigator("/confirmOrder");
             }
           })
@@ -111,22 +106,17 @@ function Payment() {
           });
       })
       .catch((error) => {
+        console.log(error);
         setOpenAlert({ open: true, message: error.message, success: false });
       });
-    console.log("place ordder called");
   };
-
-
-
-
 
   // 2nd this function will be called from handleOrder() function , this function will handle payment process
   const pay = (banks) => {
-    console.log("yes calling " + process.env.REACT_APP_KEY_ID);
     var options = {
       key: process.env.REACT_APP_KEY_ID,
       amount: paymentPrices.totalPrice * 1000,
-      currency: 'INR',
+      currency: "INR",
       name: "Dummy Academy",
       description: "Pay & Checkout this Course, Upgrade your DSA Skill",
       image: "",
@@ -170,15 +160,12 @@ function Payment() {
       });
     }
     rzp.on("payment.failed", function (response) {
-      console.log(response);
       alert("This step of Payment Failed");
     });
     rzp.open();
   };
 
-
-
-// 1st this function will be called, it will handle payment method
+  // 1st this function will be called, it will handle payment method
   const handleOrder = () => {
     dispatch(paymentProcess({ amount: paymentPrices.totalPrice }));
     if (payment.amount !== 0) {
@@ -237,72 +224,68 @@ function Payment() {
     }
   };
 
-
-
-
-
   return (
-    <Fragment>
-      <MetaData title="Payment Details"/>
+    <MainLayout>
+      <Fragment>
+        <MetaData title="Payment Details" />
 
-      <Toast />
-      {loading && <Loading />}
-      <OrderStepper activeStep={2} />
-      <Container maxWidth="md">
-        <Paper variant="outlined" square>
-          <Container sx={{ margin: "10px" }}>
-            <Typography
-              variant="h4"
-              component="h1"
-              sx={{ fontFamily: "'Poppins',Roboto" }}
-            >
-              Payment Options
-            </Typography>
-          </Container>
-        </Paper>
-        <Paper variant="outlined" sx={{ padding: "20px", marginTop: "10px" }}>
-          <FormControl fullWidth>
-            <RadioGroup
-              defaultValue="female"
-              name="radio-payment-group"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <List>
-                {methods.map((method) => {
-                  return (
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <img
-                          src={method.logo}
-                          alt="icon"
-                          style={{ width: "30px" }}
+        <Toast />
+        {loading && <Loading />}
+        <OrderStepper activeStep={2} />
+        <Container maxWidth="md" sx={{my:4}}>
+          <Paper variant="outlined" square>
+            <Container sx={{ margin: "10px" }}>
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{ fontFamily: "'Poppins',Roboto" }}
+              >
+                Payment Options
+              </Typography>
+            </Container>
+          </Paper>
+          <Paper variant="outlined" sx={{ padding: "20px", marginTop: "10px" }}>
+            <FormControl fullWidth>
+              <RadioGroup
+                defaultValue="female"
+                name="radio-payment-group"
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              >
+                <List>
+                  {methods.map((method) => {
+                    return (
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <img
+                            src={method.logo}
+                            alt="icon"
+                            style={{ width: "30px" }}
+                          />
+                        </ListItemIcon>
+
+                        <FormControlLabel
+                          value={method.type}
+                          control={<Radio size="small" color="success" />}
+                          label={method.name}
                         />
-                      </ListItemIcon>
-
-                      <FormControlLabel
-                        value={method.type}
-                        control={<Radio size="small" color="success" />}
-                        label={method.name}
-                      />
-                    </ListItemButton>
-                  );
-                })}
-              </List>
-            </RadioGroup>
-          </FormControl>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => handleOrder()}
-          >
-            Pay ₹{paymentPrices.totalPrice}
-          </Button>
-
-          
-        </Paper>
-      </Container>
-    </Fragment>
+                      </ListItemButton>
+                    );
+                  })}
+                </List>
+              </RadioGroup>
+            </FormControl>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleOrder()}
+            >
+              Pay ₹{paymentPrices.totalPrice}
+            </Button>
+          </Paper>
+        </Container>
+      </Fragment>
+    </MainLayout>
   );
 }
 

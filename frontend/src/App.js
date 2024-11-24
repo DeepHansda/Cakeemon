@@ -25,19 +25,18 @@ import ContactUs from "./Pages/ContactUs/ContactUs";
 import Auth from "./Pages/authentication/Auth";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import Profile from "./Pages/authentication/Profile";
-import Checkout from "./Pages/Orders/Checkout";
-import Shipping from "./Pages/Orders/Shipping";
-import ReviewOrder from "./Pages/Orders/ReviewOrder";
-import Payment from "./Pages/Orders/Payment";
+import Checkout from "./Pages/Orders/OrderSteps/Checkout";
+import Shipping from "./Pages/Orders/OrderSteps/Shipping";
+import ReviewOrder from "./Pages/Orders/OrderSteps/ReviewOrder";
+import Payment from "./Pages/Orders/OrderSteps/Payment";
 import MyOrders from "./Pages/Orders/MyOrders";
-import ConfirmOrder from "./Pages/Orders/ConfirmOrder";
+import ConfirmOrder from "./Pages/Orders/OrderSteps/ConfirmOrder";
 import AboutUs from "./Pages/About/AboutUs";
 import Home from "./Pages/Home/Home";
-import CustomizeCake from "./Components/Customize/CustomizeCake"
-import { loadUser } from "./Redux/Actions/UserActions";
+import CustomizeCake from "./Components/Customize/CustomizeCake";
+
 import ProductsContainer from "./Pages/Products/ProductsContainer/ProductsContainer";
-
-
+import { loadUser } from "./Redux/slices/authSlice";
 
 export const ProjectContext = createContext();
 
@@ -61,7 +60,11 @@ function App() {
 
   // global useDispatch for entire project
   const dispatch = useDispatch();
-
+  // load authenticated user if user loggedIn
+  // load authenticated user if user loggedIn
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
   useEffect(() => {
     dispatch(getCategories());
     // handling screen width
@@ -74,9 +77,6 @@ function App() {
     }
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleWidth);
-
-    // load authenticated user if user loggedIn
-    dispatch(loadUser());
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -106,6 +106,7 @@ function App() {
   const style = {
     height: 300,
   };
+
   return (
     <>
       <ProjectContext.Provider value={states}>

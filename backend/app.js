@@ -20,7 +20,7 @@ app.use(express.json());
 const corsOptions = {
   origin:["https://cakeemon.vercel.app","http://localhost:3000"],
   credentials: true,
-  'Access-Control-Allow-Headers' : 'Origin X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
+  'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
   "Access-Control-Allow-Credentials": true,
   // "Access-Control-Allow-Origin":'*'
   

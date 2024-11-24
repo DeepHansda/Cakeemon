@@ -56,12 +56,12 @@
   margin: 20px 0px;
 }
 
-.navbar-lower .navbar-middle-container .navbar-middle-item p {
+.navbar-lower .navbar-middle-container .navbar-middle-item a {
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   text-transform: capitalize;
   color: var(--secondary-color);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .navbar-bottom-search {

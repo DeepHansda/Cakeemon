@@ -39,8 +39,24 @@ class ApiFeatures {
     let queryStr = JSON.stringify(mainQueryStr);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
 
-    console.log(queryStr);
-    this.query = this.query.find(JSON.parse(queryStr));
+    const parsedQuery = JSON.parse(queryStr);
+
+    // Add price range filter
+    if (this.queryStr.price) {
+      const priceRange = this.queryStr.price.split("-");
+      parsedQuery.price = {
+        ...(priceRange[0] ? { $gte: Number(priceRange[0]) } : {}),
+        ...(priceRange[1] ? { $lte: Number(priceRange[1]) } : {}),
+      };
+    }
+
+    // Add ratings filter
+    if (this.queryStr.ratings) {
+      parsedQuery.ratings = { $gte: Number(this.queryStr.ratings) };
+    }
+
+    // console.log(parsedQuery);
+    this.query = this.query.find(parsedQuery);
 
     return this;
   }

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import "./home.css";
 
 import MainSlider from "../../Components/Utils/Slider/Slider";
@@ -15,41 +15,55 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import { ProjectContext } from "../../App";
 import birthDay from "../../assets/img/birthday-specials.jpg";
 import christmas from "../../assets/img/christmas.jpeg";
 import wedding from "../../assets/img/wedding-specials.jpg";
-import { getProductsAdmin } from "../../Redux/Actions/ProductsActions";
-import { useGetAllCategoriesQuery } from "../../Redux/slices/categoriesApiSlice";
-import Additional from "./Additional";
-import Showcase from "./Showcase";
 import MetaData from "../../Components/Utils/MetaData";
 import Query from "../../Components/Utils/Query";
-import { useGetAllProductsQuery } from "../../Redux/slices/productsApiSlice";
 import MainLayout from "../../Layouts/MainLayout";
+import { useGetAllCategoriesQuery } from "../../Redux/slices/categoriesApiSlice";
+import {
+  useGetProductsClientQuery
+} from "../../Redux/slices/productsApiSlice";
+import Additional from "./Additional";
+import Showcase from "./Showcase";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProductsAdmin());
-  }, []);
-
   const { navigator } = useContext(ProjectContext);
 
   const { data: categories, isLoading } = useGetAllCategoriesQuery();
-  console.log(categories);
-  const { data: productsResult, isLoading: isProductsLoading } =
-    useGetAllProductsQuery();
-  const products = productsResult?.result;
 
+  const { chocolateCakes, isLoading: isChocolatesLoading } =
+    useGetProductsClientQuery(
+      { category: "chocolates", page: 1 },
+      {
+        selectFromResult: ({ data, isLoading }) => ({
+          chocolateCakes: data ? data?.products : [],
+          isLoading,
+        }),
+      }
+    );
 
-  const chocolateCakes =
-    products && products.filter((f) => f.category == "chocolates").slice(0, 10);
-  const mangoCakes =
-    products && products.filter((f) => f.category == "mango").slice(0, 10);
-  const PopularCakes =
-    products && products.filter((f) => f.top === true).slice(0, 10);
+  const { mangoCakes, isLoading: isMangosLoading } = useGetProductsClientQuery(
+    { category: "mango", page: 1 },
+    {
+      selectFromResult: ({ data, isLoading }) => ({
+        mangoCakes: data ? data?.products : [],
+        isLoading,
+      }),
+    }
+  );
+  const { PopularCakes, isLoading: isPopularLoading } =
+    useGetProductsClientQuery(
+      { top: true, page: 1 },
+      {
+        selectFromResult: ({ data, isLoading }) => ({
+          PopularCakes: data ? data?.products : [],
+          isLoading,
+        }),
+      }
+    );
 
   const navi = (cat) => {
     navigator(`/allProducts?category=${cat}`);
@@ -72,7 +86,7 @@ export default function Home() {
             </div>
           </div>
           <Additional />
-          {isProductsLoading ? (
+          {isPopularLoading ? (
             <Box sx={{ p: 1, textAlign: "center" }}>
               <CircularProgress />
             </Box>
@@ -122,7 +136,7 @@ export default function Home() {
               </Grid>
             </Container>
           </Paper>
-          {isProductsLoading ? (
+          {isChocolatesLoading ? (
             <Box sx={{ p: 1, textAlign: "center" }}>
               <CircularProgress color="primary" />
             </Box>
@@ -134,7 +148,7 @@ export default function Home() {
             />
           )}
 
-          {isProductsLoading ? (
+          {isMangosLoading ? (
             <Box sx={{ p: 1, textAlign: "center" }}>
               <CircularProgress color="primary" />
             </Box>

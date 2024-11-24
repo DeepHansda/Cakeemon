@@ -5,7 +5,7 @@ import { ProductsServices } from "../Common/ProductsServices";
 
 export const addToWishList = createAsyncThunk(
   "wishlist/addToWishList",
-  async (id, { getState, rejectWithValue }) => {
+  async ({id}, { getState, rejectWithValue }) => {
     try {
       const { data } = await ProductsServices.getProductDetails(id);
 
@@ -17,7 +17,7 @@ export const addToWishList = createAsyncThunk(
         stock: data.product.stock,
       };
 
-      const updatedWishItems = [...getState().wishlist.wishItems, item];
+      const updatedWishItems = [...getState().wishList.wishItems, item];
 
       // Save updated wishlist to localStorage
       localStorage.setItem("wishItems", JSON.stringify(updatedWishItems));
@@ -30,9 +30,9 @@ export const addToWishList = createAsyncThunk(
 
 export const removeFromWishList = createAsyncThunk(
   "wishlist/removeFromWishList",
-  async (id, { getState, rejectWithValue }) => {
+  async ({id}, { getState, rejectWithValue }) => {
     try {
-      const updatedWishItems = getState().wishlist.wishItems.filter(
+      const updatedWishItems = getState().wishList.wishItems.filter(
         (i) => i.product !== id
       );
 

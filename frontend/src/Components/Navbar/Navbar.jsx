@@ -31,7 +31,6 @@ function NavContact() {
   );
 }
 
-
 const navItems = [
   { name: "Home", path: "/" },
   { name: "Customize Cake", path: "/custom" },
@@ -41,22 +40,21 @@ const navItems = [
 ];
 
 export default function Navbar() {
-  const { offset, width, navigator } = useContext(ProjectContext);
+  const { offset, width, navigator, location } = useContext(ProjectContext);
   const [openBar, setOpenBar] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishItems } = useSelector((state) => state.wishList);
   const { data: categories, isLoading } = useGetAllCategoriesQuery();
-
-console.log(categories)
+  const currentPath = location.pathname;
 
   const userNavList = [
     {
       title: "wishlist",
       icon: FiHeart(),
       link: "/wishlist",
-      count: 0,
+      count: wishItems.length,
     },
-  
+
     {
       title: "cart",
       icon: FiShoppingCart(),
@@ -70,8 +68,6 @@ console.log(categories)
       // count:,
     },
   ];
-
-  
 
   return (
     <>
@@ -131,7 +127,12 @@ console.log(categories)
               <ul className="navbar-middle-items">
                 {navItems.map((item, index) => (
                   <li key={index} className="navbar-middle-item">
-                    <Link to={item.path}>{item.name}</Link>
+                    <Link
+                      to={item.path}
+                      style={{ color: item.path === currentPath && "#55a630" }}
+                    >
+                      {item.name}
+                    </Link>
                   </li>
                 ))}
               </ul>

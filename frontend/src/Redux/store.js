@@ -5,6 +5,9 @@ import { categoriesApiSlice } from "./slices/categoriesApiSlice";
 import { cartReducers } from "./slices/cartSlice";
 import { wishListReducer } from "./slices/wishListSlice";
 import { productsApiSlice } from "./slices/productsApiSlice";
+import { authReducers } from "./slices/authSlice";
+import { ordersReducers } from "./slices/ordersSlice";
+import {paymentReducers} from './slices/paymentSlice'
 
 const persistedWishItems = localStorage.getItem("wishItems")
   ? JSON.parse(localStorage.getItem("wishItems"))
@@ -36,14 +39,18 @@ const store = configureStore({
     [bannersApi.reducerPath]: bannersApi.reducer,
     [categoriesApiSlice.reducerPath]: categoriesApiSlice.reducer,
     [productsApiSlice.reducerPath]: productsApiSlice.reducer,
+    orders: ordersReducers,
+    user: authReducers,
     cart: cartReducers,
     wishList: wishListReducer,
+    payment:paymentReducers
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(bannersApi.middleware)
-      .concat(categoriesApiSlice.middleware).concat(productsApiSlice.middleware),
+      .concat(categoriesApiSlice.middleware)
+      .concat(productsApiSlice.middleware),
 });
 
 export default store;

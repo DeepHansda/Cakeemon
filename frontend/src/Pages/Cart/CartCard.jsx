@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import React, { useContext } from "react";
 import { ProjectContext } from "../../App";
-import { addToCart, removeFromCart } from "../../Redux/Actions/CartActions";
 import "./cart.css";
 import { FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../Components/Utils/Toast";
+import { addToCart, removeFromCart } from "../../Redux/slices/cartSlice";
 export default function CartCard({ item }) {
   const { setOpenAlert, dispatch } = useContext(ProjectContext);
 
@@ -33,14 +33,18 @@ export default function CartCard({ item }) {
         message: "stock is limited",
         success: false,
       });
-    dispatch(addToCart(id, newQty));
+    dispatch(addToCart({id, quantity:newQty}));
   };
 
   const decreaseQuantity = (id, quantity) => {
     const newQty = quantity - 1;
     if (1 >= quantity) return;
-    dispatch(addToCart(id, newQty));
+    dispatch(addToCart({id, quantity:newQty}));
   };
+
+  const deleteFromCart =(id) =>{
+    dispatch(removeFromCart({id}))
+  }
   return (
     <Paper
       variant="outlined"
@@ -54,7 +58,7 @@ export default function CartCard({ item }) {
           </div>
 
           <div className="cart-paper-title">
-            <Typography variant="h4" onClick={() =>navigator(item.id)}>{item.name}</Typography>
+            <Typography  sx={{fontSize:{sm:"1.2rem",md:"1.5rem"}}} onClick={() =>navigator(item.id)}>{item.name}</Typography>
           </div>
         </div>
 
@@ -87,7 +91,7 @@ export default function CartCard({ item }) {
                 sx={{ margin: "0 10px", cursor: "pointer" }}
                 
               >
-                <IconButton color="primary" onClick={() => dispatch(removeFromCart(item.id))}>
+                <IconButton color="primary" onClick={()=>deleteFromCart(item.id)}>
                   <FiTrash />
                 </IconButton>
               </Box>

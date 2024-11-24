@@ -14,32 +14,51 @@ import "../products.style.css";
 import FilterDrawer from "./FilterDrawer";
 import MetaData from "../../../Components/Utils/MetaData";
 import Loading from "../../../Components/Utils/Loading";
+import MainLayout from "../../../Layouts/MainLayout";
 
 export default function ProductsContainer() {
-  const [currentPage, setCurrentPage] = React.useState(1);
   const { width } = useContext(ProjectContext);
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [keyword, setKeyword] = useState("");
-  const [category, setCategory] = React.useState("");
-  const [occasion, setOccasion] = useState("");
   const [searchParams] = useSearchParams();
-  const dispatch = useDispatch();
-  const ratings = "";
+  const [params, setParams] = useState({
+    keyword: "",
+    currentPage: 1,
+    category: "",
+    occasion: "",
+    ratings: "",
+    price:""
+  });
   // getting search parameter form searchbar------------------------------
+console.log(params)
+  const { productsStates, isLoading, refetch } = useGetProductsClientQuery(
+    params,
+    {
+      selectFromResult: ({ data, isLoading, refetch }) => ({
+        productsStates: data ?? {
+          products: [],
+          productPerPage: 0,
+          productsCount: 0,
+        },
+        isLoading,
+        refetch,
+      }),
+    }
+  );
+  const { products, productPerPage, productsCount } = productsStates;
 
   var keywordParam = searchParams.get("keyword");
   useEffect(() => {
-    setKeyword(keywordParam === null ? "" : keywordParam);
+    setParams((prev) => ({ ...prev, keyword: keywordParam || "" }));
   }, [keywordParam]);
 
   var categoryParam = searchParams.get("category");
   useEffect(() => {
-    setCategory(categoryParam === null ? "" : categoryParam);
+    setParams((prev) => ({ ...prev, category: categoryParam || "" }));
   }, [categoryParam]);
 
   var occasionParam = searchParams.get("occasion");
   useEffect(() => {
-    setOccasion(occasionParam === null ? "" : occasionParam);
+    setParams((prev) => ({ ...prev, occasion: occasionParam || "" }));
   }, [occasionParam]);
 
   const breakPo = () => {
@@ -47,86 +66,76 @@ export default function ProductsContainer() {
   };
 
   const handlePageChange = (event) => {
-    setCurrentPage(event);
+    setParams((prev) => ({ ...prev, currentPage: event }));
   };
 
-  // handling products------------------------------------------
-  const {data:productsStates,isLoading} = useGetProductsClientQuery({keyword, currentPage, category, occasion})
-
   // useEffect(() => {
-  //   useGetProductsClientQuery(
-  //     (keyword, currentPage, category, occasion, ratings)
-  //   );
+  //   refetch();
   // }, [keyword, currentPage, category, occasion]);
-
-  
-
-
-  const products = productsStates?.products
-  const productPerPage = productsStates?.productPerPage
-  const productsCount = productsStates?.productsCount
-  // filter events------------------------------------------------
 
   return (
     <React.Fragment>
-      <MetaData title="Our Cakes" />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <div className="products-mainContainer">
-            {/* filter box -------------------------------------------------*/}
+      <MainLayout>
+        <MetaData title="Our Cakes" />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="products-mainContainer">
+              {/* filter box -------------------------------------------------*/}
 
-            <FilterDrawer
-              openDrawer={openDrawer}
-              setOpenDrawer={setOpenDrawer}
-            />
+              <FilterDrawer
+                openDrawer={openDrawer}
+                setOpenDrawer={setOpenDrawer}
+                setParams={setParams}
+              />
 
-            {/* products box -------------------------------------------------*/}
+              {/* products box -------------------------------------------------*/}
 
-            <div className="mainContainer-product-container">
-              <div className="chip-container">
-                {breakPo() && (
-                  <Chip
-                    label="Filter"
-                    icon={<FiSettings />}
-                    variant="outlined"
-                    onClick={() => setOpenDrawer(true)}
-                  />
-                )}
-              </div>
-              {products.length != 0 ? (
-                <div className="products-container">
-                  {products.map((product, index) => {
-                    return <Product product={product} key={index} />;
-                  })}
+              <div className="mainContainer-product-container">
+                <div className="chip-container">
+                  {breakPo() && (
+                    <Chip
+                      label="Filter"
+                      icon={<FiSettings />}
+                      variant="outlined"
+                      onClick={() => setOpenDrawer(true)}
+                    />
+                  )}
                 </div>
-              ) : (
-                <Container>
-                  <Typography variant="h5">Products not Found !</Typography>
-                </Container>
-              )}
+                {products.length != 0 ? (
+                  <div className="products-container">
+                    {products.map((product, index) => {
+                      return <Product product={product} key={index} />;
+                    })}
+                  </div>
+                ) : (
+                  <Container>
+                    <Typography variant="h5">Products not Found !</Typography>
+                  </Container>
+                )}
 
-              <div className="products-container-pagination">
-                <Pagination
-                  activePage={currentPage}
-                  itemsCountPerPage={productPerPage}
-                  totalItemsCount={productsCount}
-                  onChange={handlePageChange}
-                  nextPageText="Next"
-                  prevPageText="Prev"
-                  firstPageText="First"
-                  lastPageText="Last"
-                  itemClass="page-item"
-                  linkClass="page-link"
-                  activeClass="pageItemActive"
-                  activeLinkClass="pageLinkActive"
-                />
+                <div className="products-container-pagination">
+                  <Pagination
+                    activePage={params.currentPage}
+                    itemsCountPerPage={productPerPage}
+                    totalItemsCount={productsCount}
+                    onChange={handlePageChange}
+                    nextPageText="Next"
+                    prevPageText="Prev"
+                    firstPageText="First"
+                    lastPageText="Last"
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    activeClass="pageItemActive"
+                    activeLinkClass="pageLinkActive"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </MainLayout>
     </React.Fragment>
   );
 }

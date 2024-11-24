@@ -7,21 +7,41 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ id, quantity }, { getState, rejectWithValue }) => {
     try {
-      const { data } = await ProductsServices.getProductDetails(id);
-      const item = {
-        id: data.product._id,
-        img: data.product.images[0].img,
-        name: data.product.name,
-        price: data.product.price,
-        stock: data.product.stock,
-        quantity: quantity,
-      };
-
-      const updatedCartItems = [...getState().cart.cartItems, item];
-
-      // Save updated cart to localStorage
-      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-      return item;
+      
+        // Check if the product already exists in the cart
+        const existingItem = getState().cart.cartItems.find((item) => item.id === id);
+  
+        let item;
+  
+        if (existingItem) {
+          // If the product exists, update its quantity without fetching details
+          item = {
+            ...existingItem,
+            quantity: quantity, // Update the quantity
+          };
+        } else {
+          // If the product doesn't exist, fetch its details
+          const { data } = await ProductsServices.getProductDetails(id);
+          item = {
+            id: data.product._id,
+            img: data.product.images[0].img,
+            name: data.product.name,
+            price: data.product.price,
+            stock: data.product.stock,
+            quantity: quantity,
+          };
+        }
+  
+        // Update the cart with the new or updated item
+        const updatedCartItems = [
+          ...getState().cart.cartItems.filter((cartItem) => cartItem.id !== id), // Exclude the existing item (if any)
+          item,
+        ];
+  
+        // Save updated cart to localStorage
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+  
+        return item;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -30,7 +50,7 @@ export const addToCart = createAsyncThunk(
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async (id, { getState, rejectWithValue }) => {
+  async ({id}, { getState, rejectWithValue }) => {
     try {
       const updatedCartItems = getState().cart.cartItems.filter(
         (item) => item.id !== id

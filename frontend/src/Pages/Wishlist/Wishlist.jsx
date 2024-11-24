@@ -14,13 +14,15 @@ import {
 import React, { Fragment } from "react";
 import { FiAirplay, FiCloudOff, FiDelete, FiTrash } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromWishList } from "../../Redux/Actions/WishListActions";
+
 import "./Wishlist.css";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../../Components/Utils/MetaData";
+import { removeFromWishList } from "../../Redux/slices/wishListSlice";
+import MainLayout from "../../Layouts/MainLayout";
 
 function Wishlist() {
-  // const { wishItems } = useSelector((state) => state.wishList);
+  const { wishItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
   // const wishCount = wishItems.length;
 
@@ -29,28 +31,33 @@ function Wishlist() {
     navigate(`/productDetails/${id}`);
   };
   return (
-    <Fragment>
-      <MetaData title="Wishlist" />
+    <MainLayout>
+      <Fragment>
+        <MetaData title="Wishlist" />
 
-      <div className="wishlist">
-        <Paper variant="outlined">
-          <Box sx={{ margin: "5px 0", padding: "10px" }}>
-            <Typography variant="h2">My Wishlist</Typography>
-          </Box>
-          <Divider variant="middle" />
-          {/* {wishItems.length > 0 ? (
-            WishItems(wishItems)
-          ) : (
-            <Container>
-              <Typography variant="h6">Wishlist is Empty !</Typography>
-            </Container>
-          )} */}
-        </Paper>
-      </div>
-    </Fragment>
+        <div className="wishlist">
+          <Paper variant="outlined">
+            <Box sx={{ margin: "5px 0", padding: "10px" }}>
+              <Typography variant="h2">My Wishlist</Typography>
+            </Box>
+            <Divider variant="middle" />
+            {wishItems.length > 0 ? (
+              WishItems(wishItems)
+            ) : (
+              <Container>
+                <Typography variant="h6">Wishlist is Empty !</Typography>
+              </Container>
+            )}
+          </Paper>
+        </div>
+      </Fragment>
+    </MainLayout>
   );
 
   function WishItems(wishItems) {
+    const deleteWishItem = (id) => {
+      dispatch(removeFromWishList({ id }));
+    };
     return (
       <Container
         sx={{
@@ -61,7 +68,7 @@ function Wishlist() {
           flexWrap: "wrap",
         }}
       >
-        {/* {wishItems.map((item) => {
+        {wishItems.map((item) => {
           return (
             <Container
               sx={{
@@ -120,9 +127,7 @@ function Wishlist() {
                       <Tooltip title="Delete">
                         <IconButton>
                           <FiTrash
-                            onClick={() =>
-                              dispatch(removeFromWishList(item.product))
-                            }
+                            onClick={() => deleteWishItem(item.product)}
                           />
                         </IconButton>
                       </Tooltip>
@@ -132,7 +137,7 @@ function Wishlist() {
               </Card>
             </Container>
           );
-        })} */}
+        })}
       </Container>
     );
   }

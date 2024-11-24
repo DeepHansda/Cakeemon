@@ -1,42 +1,46 @@
-import React, { useContext, useState } from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Container,
   Divider,
   Drawer,
-  Paper,
-  Slider,
-  Box,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  ListItemButton,
-  Radio,
   FormControlLabel,
   List,
+  ListItemButton,
+  Paper,
+  Radio,
   RadioGroup,
-  Button,
+  Slider,
   Typography,
-  Container,
-  Chip,
 } from "@mui/material";
+import React, { useContext, useState } from "react";
 
-import { FiChevronDown, FiSettings } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { FiChevronDown } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import { ProjectContext } from "../../../App";
-import { getProductsClient } from "../../../Redux/Actions/ProductsActions";
+import { useGetAllCategoriesQuery } from "../../../Redux/slices/categoriesApiSlice";
+import { useGetProductsClientQuery } from "../../../Redux/slices/productsApiSlice";
 
-function FilterDrawer({ openDrawer, setOpenDrawer }) {
-  const [value, setValue] = useState([0, 1000]);
+function FilterDrawer({ openDrawer, setOpenDrawer, setParams }) {
+  const [price, setPrice] = useState([0, 1000]);
   const [ratings, setRatings] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { offset, width } = useContext(ProjectContext);
   const dispatch = useDispatch();
-  const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [occasion, setOccasion] = useState("");
-  const { categories } = useSelector((state) => state.categories);
+  const { data: categories, isLoading } = useGetAllCategoriesQuery();
 
   const applyFilter = () => {
-    dispatch(getProductsClient(keyword, currentPage, category,occasion, ratings));
+    setParams((prev) => ({
+      ...prev,
+      price: `${price[0]}-${price[1]}`,
+      category: category,
+      ratings: ratings,
+    }));
   };
   const handlePageChange = (event) => {
     setCurrentPage(event);
@@ -46,7 +50,7 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
     return `${value}°C`;
   }
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setPrice(newValue);
   };
 
   const handleRatingChange = (event, newValue) => {
@@ -85,6 +89,23 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
       label: "₹1000",
     },
   ];
+
+  const ratingsList = [{
+    value:1,
+    label:"1★ & above"
+  },{
+    value:2,
+    label:"2★ & above"
+  },{
+    value:3,
+    label:"3★ & above"
+  },{
+    value:4,
+    label:"4★ & above"
+  },{
+    value:5,
+    label:"5★ & above"
+  },]
   return (
     <div className="products-mainContainer-filter">
       {/* Drawer sections */}
@@ -114,7 +135,7 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
             <Slider
               aria-label="Custom marks"
               // defaultValue={value}
-              value={value}
+              value={price}
               onChange={handleChange}
               getAriaValueText={valuetext}
               step={200}
@@ -125,8 +146,6 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
               max={1000}
             />
           </Container>
-
-          
 
           <Box sx={{ marginTop: "10px" }}>
             <Accordion>
@@ -142,7 +161,7 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
                   aria-labelledby="demo-controlled-radio-buttons-group"
                   name="controlled-radio-buttons-group"
                   value={category}
-                  onChange={(e)=> setCategory(e.target.value)}
+                  onChange={(e) => setCategory(e.target.value)}
                 >
                   <List
                     sx={{
@@ -152,7 +171,7 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
                     dense="true"
                   >
                     {categories &&
-                      categories.map((cat, index) => {
+                      categories.categories?.map((cat, index) => {
                         return (
                           <ListItemButton key={index}>
                             <FormControlLabel
@@ -170,7 +189,6 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
             </Accordion>
           </Box>
           <Divider />
-
 
           <Box sx={{ marginTop: "10px" }}>
             <Accordion>
@@ -197,23 +215,19 @@ function FilterDrawer({ openDrawer, setOpenDrawer }) {
                     }}
                     dense="true"
                   >
-                    <ListItemButton>
-                      <FormControlLabel
-                        value={4}
-                        control={<Radio size="small" />}
-                        label="4★ & above"
-                        sx={{ textTransform: "capitalize" }}
-                      />
-                    </ListItemButton>
+                    {ratingsList.reverse().map((rate,index)=>(
 
-                    <ListItemButton>
+                    <ListItemButton key={index}>
                       <FormControlLabel
-                        value={3}
+                        value={rate.value}
                         control={<Radio size="small" />}
-                        label="3★ & above"
+                        label={rate.label}
                         sx={{ textTransform: "capitalize" }}
                       />
                     </ListItemButton>
+                    ))}
+
+                    
                   </List>
                 </RadioGroup>
               </AccordionDetails>

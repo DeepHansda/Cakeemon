@@ -46,7 +46,7 @@ module.exports = {
   // get all Products-------------
 
   getAllProducts: catchAsyncErrors(async (req, res, next) => {
-    const productPerPage = 8;
+    const productPerPage = 10;
     const productsCount = await ProductModel.countDocuments();
 
     const apiFeature = new ApiFeatures(ProductModel.find({}), req.query)

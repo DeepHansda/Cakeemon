@@ -3,12 +3,12 @@ import "./products.style.css";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { ProjectContext } from "../../App";
-import { addToWishList } from "../../Redux/Actions/WishListActions";
 import { useSelector } from "react-redux";
-import { addToCart } from "../../Redux/Actions/CartActions";
 import { Button, Divider, Typography } from "@mui/material";
 import Toast from "../../Components/Utils/Toast";
 import Star from "../../Components/Utils/Star";
+import { addToCart } from "../../Redux/slices/cartSlice";
+import { addToWishList } from "../../Redux/slices/wishListSlice";
 
 export default function Product({ product }) {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Product({ product }) {
   const { cartItems } = useSelector((state) => state.cart);
 
   const addToCartHandler = (id) => {
-    dispatch(addToCart(product._id, 1))
+    dispatch(addToCart({ id, quantity: 1 }))
       .then((res) => {
         const exist = cartItems.find((item) => item.id == id);
 
@@ -50,7 +50,7 @@ export default function Product({ product }) {
   };
 
   const addToWishHandler = (id) => {
-    dispatch(addToWishList(id))
+    dispatch(addToWishList({ id }))
       .then((res) => {
         const exist = wishItems.find((item) => item.product == id);
         if (exist) {

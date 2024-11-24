@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react'
 import { FiHash, FiMenu, FiPhone, FiUser } from 'react-icons/fi'
 import { Country, State } from "country-state-city";
 import { useDispatch, useSelector } from 'react-redux';
-import { saveShippingInfo } from '../../Redux/Actions/CartActions';
-import { ProjectContext } from '../../App';
+import { saveShippingInfo } from '../../../Redux/Actions/CartActions';
+import { ProjectContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 
 function Shipping() {
