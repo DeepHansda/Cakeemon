@@ -193,6 +193,7 @@
 }
 .popular-category-container .popular-category-img img{ 
   max-width: 100%;
+  cursor: pointer;
 }
 .popular-category-container .popular-category-title{
   position: absolute;

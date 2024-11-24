@@ -21,6 +21,7 @@
     width:100%;
     text-align: center;
     align-items:center;
+    cursor: pointer;
 
 }
 .cate-item .cate-item-img{

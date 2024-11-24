@@ -46,6 +46,8 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const { dispatch, navigator, setOpenAlert, location } =
+    useContext(ProjectContext);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -58,9 +60,8 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [previewImg, setPreviewImg] = useState("");
   const [img, setImg] = useState("");
+  const currentPath = location.pathname;
 
-  const { dispatch, navigator, setOpenAlert, location } =
-    useContext(ProjectContext);
   const { loading, isAuthenticated, user, error } = useSelector(
     (state) => state.user
   );
@@ -104,6 +105,9 @@ export default function SignUp() {
     }
 
     if (isAuthenticated) {
+      // if (currentPath === "/auth") {
+      //   navigator("/profile");
+      // }
       navigator("/profile");
     }
   }, [dispatch, error, isAuthenticated]);

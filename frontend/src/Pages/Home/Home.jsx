@@ -23,9 +23,7 @@ import MetaData from "../../Components/Utils/MetaData";
 import Query from "../../Components/Utils/Query";
 import MainLayout from "../../Layouts/MainLayout";
 import { useGetAllCategoriesQuery } from "../../Redux/slices/categoriesApiSlice";
-import {
-  useGetProductsClientQuery
-} from "../../Redux/slices/productsApiSlice";
+import { useGetProductsClientQuery } from "../../Redux/slices/productsApiSlice";
 import Additional from "./Additional";
 import Showcase from "./Showcase";
 
@@ -109,6 +107,7 @@ export default function Home() {
                             image={category.img}
                             alt={category.name}
                             sx={{
+                              cursor: "pointer",
                               height: { xs: "85px", sm: "120px", md: "180px" },
                             }}
                           />
