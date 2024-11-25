@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { bannersApi } from "./slices/bannersApiSlice";
-import { categoriesApiSlice } from "./slices/categoriesApiSlice";
-import { cartReducers } from "./slices/cartSlice";
-import { wishListReducer } from "./slices/wishListSlice";
-import { productsApiSlice } from "./slices/productsApiSlice";
 import { authReducers } from "./slices/authSlice";
-import { ordersReducers } from "./slices/ordersSlice";
-import {paymentReducers} from './slices/paymentSlice'
+import { bannersApi } from "./slices/bannersApiSlice";
+import { cartReducers } from "./slices/cartSlice";
+import { categoriesApiSlice } from "./slices/categoriesApiSlice";
+import { ordersApi } from "./slices/ordersApiSlices";
+import { paymentApi } from "./slices/paymentApiSlices";
+import { productsApiSlice } from "./slices/productsApiSlice";
+import { wishListReducer } from "./slices/wishListSlice";
 
 const persistedWishItems = localStorage.getItem("wishItems")
   ? JSON.parse(localStorage.getItem("wishItems"))
@@ -39,18 +39,20 @@ const store = configureStore({
     [bannersApi.reducerPath]: bannersApi.reducer,
     [categoriesApiSlice.reducerPath]: categoriesApiSlice.reducer,
     [productsApiSlice.reducerPath]: productsApiSlice.reducer,
-    orders: ordersReducers,
+    [paymentApi.reducerPath]: paymentApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
     user: authReducers,
     cart: cartReducers,
     wishList: wishListReducer,
-    payment:paymentReducers
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(bannersApi.middleware)
       .concat(categoriesApiSlice.middleware)
-      .concat(productsApiSlice.middleware),
+      .concat(productsApiSlice.middleware)
+      .concat(paymentApi.middleware)
+      .concat(ordersApi.middleware),
 });
 
 export default store;

@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import card from "../../../assets/icons/card-return-icon.svg";
 import Upi from "../../../assets/icons/upi-icon.svg";
@@ -24,12 +24,13 @@ import Loading from "../../../Components/Utils/Loading";
 import MetaData from "../../../Components/Utils/MetaData";
 import OrderStepper from "../../../Components/Utils/OrderStepper";
 import Toast from "../../../Components/Utils/Toast";
-import { createOrder } from "../../../Redux/slices/ordersSlice";
-import {
-  paymentProcess,
-  paymentVerify,
-} from "../../../Redux/slices/paymentSlice";
+
 import MainLayout from "../../../Layouts/MainLayout";
+import {
+  usePaymentProcessMutation,
+  usePaymentVerifyMutation,
+} from "../../../Redux/slices/paymentApiSlices";
+import { useCreateOrderMutation } from "../../../Redux/slices/ordersApiSlices";
 
 const methods = [
   { name: "UPI", type: "upi", logo: Upi },
@@ -45,23 +46,15 @@ function Payment() {
 
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
 
-  const { payment, error } = useSelector((state) => state.payment);
-
   const { order, loading } = useSelector((state) => state.orders);
 
   const { dispatch, navigator, setOpenAlert } = useContext(ProjectContext);
+  const [paymentProcess, { isLoading: isProcessing }] =
+    usePaymentProcessMutation();
+  const [paymentVerify, { isLoading: isVerifying }] =
+    usePaymentVerifyMutation();
 
-  useEffect(() => {
-    if (error) {
-      setOpenAlert({
-        open: true,
-        message: "Check Your Network Connection",
-        success: false,
-      });
-      // location.reload()
-    }
-  }, [error]);
-
+  const [createOrder] = useCreateOrderMutation();
   const formatDate = () => {
     const result = new Date(Date.now());
     result.setDate(result.getDate() + 7);
@@ -70,8 +63,9 @@ function Payment() {
 
   // 3rd this function will be called from pay() function , this function will handle payment verification and after payment varified ,the order will be placed.
   const placeOrder = (paymentInfo) => {
-    dispatch(paymentVerify(paymentInfo))
-      .then(({ payload }) => {
+    paymentVerify(paymentInfo)
+      .unwrap()
+      .then((payload) => {
         setOpenAlert({ open: true, message: payload.message, success: true });
 
         const orderData = {
@@ -89,8 +83,9 @@ function Payment() {
           deliveryDate: formatDate(),
         };
 
-        dispatch(createOrder(orderData))
-          .then(({ payload }) => {
+        createOrder(orderData)
+          .unwrap()
+          .then((payload) => {
             if (payload.success == 1) {
               setOpenAlert({
                 open: true,
@@ -112,16 +107,17 @@ function Payment() {
   };
 
   // 2nd this function will be called from handleOrder() function , this function will handle payment process
-  const pay = (banks) => {
+  const pay = async (banks, paymentRes) => {
     var options = {
       key: process.env.REACT_APP_KEY_ID,
-      amount: paymentPrices.totalPrice * 1000,
-      currency: "INR",
+      amount: paymentRes.amount,
+      currency: paymentRes.currency,
       name: "Dummy Academy",
       description: "Pay & Checkout this Course, Upgrade your DSA Skill",
       image: "",
-      order_id: payment.id,
+      order_id: paymentRes.id,
       handler: function (response) {
+        console.log(response);
         if (response.razorpay_signature) {
           placeOrder(response);
         }
@@ -167,61 +163,71 @@ function Payment() {
 
   // 1st this function will be called, it will handle payment method
   const handleOrder = () => {
-    dispatch(paymentProcess({ amount: paymentPrices.totalPrice }));
-    if (payment.amount !== 0) {
-      switch (paymentMethod) {
-        case "upi":
-          const upiBanks = {
-            name: "Pay via UPI",
-            instruments: [
-              {
-                method: "upi",
-              },
-            ],
-          };
-          return pay(upiBanks);
+    paymentProcess({ amount: paymentPrices.totalPrice })
+      .unwrap()
+      .then((paymentRes) => {
+        if (paymentPrices.totalPrice !== 0) {
+          switch (paymentMethod) {
+            case "upi":
+              const upiBanks = {
+                name: "Pay via UPI",
+                instruments: [
+                  {
+                    method: "upi",
+                  },
+                ],
+              };
+              return pay(upiBanks, paymentRes);
 
-        case "wallets":
-          const walletsBanks = {
-            name: "Pay via Wallet",
-            instruments: [
-              {
-                method: "wallet",
-              },
-            ],
-          };
-          return pay(walletsBanks);
+            case "wallets":
+              const walletsBanks = {
+                name: "Pay via Wallet",
+                instruments: [
+                  {
+                    method: "wallet",
+                  },
+                ],
+              };
+              return pay(walletsBanks, paymentRes);
 
-        case "cards":
-          const cardsBanks = {
-            name: "Pay via Cards",
-            instruments: [
-              {
-                method: "card",
-              },
-            ],
-          };
-          return pay(cardsBanks);
+            case "cards":
+              const cardsBanks = {
+                name: "Pay via Cards",
+                instruments: [
+                  {
+                    method: "card",
+                  },
+                ],
+              };
+              return pay(cardsBanks, paymentRes);
 
-        case "netBankings":
-          const netBanks = {
-            name: "Pay via Net Banking",
-            instruments: [
-              {
-                method: "netbanking",
-              },
-            ],
-          };
-          return pay(netBanks);
+            case "netBankings":
+              const netBanks = {
+                name: "Pay via Net Banking",
+                instruments: [
+                  {
+                    method: "netbanking",
+                  },
+                ],
+              };
+              return pay(netBanks, paymentRes);
 
-        default:
-          return setOpenAlert({
-            open: true,
-            message: "please select a payment option.",
-            success: false,
-          });
-      }
-    }
+            default:
+              return setOpenAlert({
+                open: true,
+                message: "please select a payment option.",
+                success: false,
+              });
+          }
+        }
+      })
+      .catch((error) =>
+        setOpenAlert({
+          open: true,
+          message: error.message,
+          success: false,
+        })
+      );
   };
 
   return (
@@ -232,7 +238,7 @@ function Payment() {
         <Toast />
         {loading && <Loading />}
         <OrderStepper activeStep={2} />
-        <Container maxWidth="md" sx={{my:4}}>
+        <Container maxWidth="md" sx={{ my: 4 }}>
           <Paper variant="outlined" square>
             <Container sx={{ margin: "10px" }}>
               <Typography
