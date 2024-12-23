@@ -33,7 +33,7 @@ function NavContact() {
 
 const navItems = [
   { name: "Home", path: "/" },
-  { name: "Customize Cake", path: "/custom" },
+  // { name: "Customize Cake", path: "/custom" },
   { name: "Products", path: "/allProducts" },
   { name: "Contact", path: "/contactUS" },
   { name: "About", path: "/aboutUs" },
