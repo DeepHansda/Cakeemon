@@ -1,16 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const connectDatabase = () =>{
-const mongoURI = process.env.MONGOURI || 'mongodb://localhost:27017/cakeemon'
-const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // useCreateIndex: true,
-}
+const connectDatabase = async () => {
+  const mongoURI = process.env.MONGOURI || "mongodb://localhost:27017/cakeemon";
 
-mongoose.connect(mongoURI, options).then((res) => {
-    console.log('mongodb connected!')
-}).catch(err => console.log(err));
-}
+  try {
+    await mongoose.connect(mongoURI);
+    console.log("mongodb connected!");
+  } catch (error) {
+    console.log("mongodb connection error");
+    console.log(error);
+  }
+};
 
 module.exports = connectDatabase;
